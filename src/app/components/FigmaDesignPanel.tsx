@@ -59,142 +59,58 @@ export function FigmaDesignPanel() {
   const { accentColor, setAccentColor } = useColor();
   const [showColorPicker, setShowColorPicker] = useState(false);
   const colorPickerRef = useRef<HTMLDivElement>(null);
-  const svPickerRef = useRef<HTMLDivElement>(null);
   const hueSliderRef = useRef<HTMLDivElement>(null);
-
-  // Convert hex to RGB
-  const hexToRgb = (hex: string) => {
-    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    return result ? {
-      r: parseInt(result[1], 16),
-      g: parseInt(result[2], 16),
-      b: parseInt(result[3], 16)
-    } : { r: 24, g: 160, b: 251 };
-  };
-
-  // Convert RGB to hex
-  const rgbToHex = (r: number, g: number, b: number) => {
-    return "#" + [r, g, b].map(x => {
-      const hex = x.toString(16);
-      return hex.length === 1 ? "0" + hex : hex;
-    }).join('');
-  };
-
-  const rgb = hexToRgb(accentColor);
-  const initialHsv = rgbToHsv(rgb.r, rgb.g, rgb.b);
-  
-  const [hue, setHue] = useState(initialHsv.h);
-  const [saturation, setSaturation] = useState(initialHsv.s);
-  const [value, setValue] = useState(initialHsv.v);
-  const [isDraggingSV, setIsDraggingSV] = useState(false);
+  const [hue, setHue] = useState(() => {
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(accentColor);
+    if (!result) return 200;
+    const r = parseInt(result[1], 16) / 255;
+    const g = parseInt(result[2], 16) / 255;
+    const b = parseInt(result[3], 16) / 255;
+    return rgbToHsv(r * 255, g * 255, b * 255).h;
+  });
   const [isDraggingHue, setIsDraggingHue] = useState(false);
 
-  // Track if we're updating internally to prevent loops
-  const isInternalUpdate = useRef(false);
+  const rgbToHex = (r: number, g: number, b: number) =>
+    "#" + [r, g, b].map(x => x.toString(16).padStart(2, "0")).join('');
 
-  // Update accent color when HSV changes
-  useEffect(() => {
-    if (isInternalUpdate.current) {
-      isInternalUpdate.current = false;
-      return;
-    }
-    
-    const rgb = hsvToRgb(hue, saturation, value);
-    const newColor = rgbToHex(rgb.r, rgb.g, rgb.b);
-    if (newColor !== accentColor) {
-      setAccentColor(newColor);
-    }
-  }, [hue, saturation, value, accentColor, setAccentColor]);
-
-  // Update HSV when accent color changes externally
-  useEffect(() => {
-    const rgb = hexToRgb(accentColor);
-    const hsv = rgbToHsv(rgb.r, rgb.g, rgb.b);
-    
-    // Only update if the values are actually different
-    if (Math.abs(hsv.h - hue) > 0.5 || Math.abs(hsv.s - saturation) > 0.5 || Math.abs(hsv.v - value) > 0.5) {
-      isInternalUpdate.current = true;
-      setHue(hsv.h);
-      setSaturation(hsv.s);
-      setValue(hsv.v);
-    }
-  }, [accentColor]);
-
-  // Handle SV picker mouse events
-  const handleSVMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
-    setIsDraggingSV(true);
-    updateSV(e);
-  };
-
-  const updateSV = (e: React.MouseEvent<HTMLDivElement> | MouseEvent) => {
-    if (!svPickerRef.current) return;
-    const rect = svPickerRef.current.getBoundingClientRect();
-    const x = Math.max(0, Math.min(e.clientX - rect.left, rect.width));
-    const y = Math.max(0, Math.min(e.clientY - rect.top, rect.height));
-    setSaturation((x / rect.width) * 100);
-    setValue(100 - (y / rect.height) * 100);
-  };
-
-  // Handle hue slider mouse events
-  const handleHueMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
-    setIsDraggingHue(true);
-    updateHue(e);
+  const hueToHex = (h: number) => {
+    const { r, g, b } = hsvToRgb(h, 100, 100);
+    return rgbToHex(r, g, b);
   };
 
   const updateHue = (e: React.MouseEvent<HTMLDivElement> | MouseEvent) => {
     if (!hueSliderRef.current) return;
     const rect = hueSliderRef.current.getBoundingClientRect();
     const x = Math.max(0, Math.min(e.clientX - rect.left, rect.width));
-    setHue((x / rect.width) * 360);
+    const newHue = (x / rect.width) * 360;
+    setHue(newHue);
+    setAccentColor(hueToHex(newHue));
   };
 
-  // Mouse move and up handlers
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      if (isDraggingSV) {
-        updateSV(e);
-      }
-      if (isDraggingHue) {
-        updateHue(e);
-      }
-    };
-
-    const handleMouseUp = () => {
-      setIsDraggingSV(false);
-      setIsDraggingHue(false);
-    };
-
-    if (isDraggingSV || isDraggingHue) {
+    const handleMouseMove = (e: MouseEvent) => { if (isDraggingHue) updateHue(e); };
+    const handleMouseUp = () => setIsDraggingHue(false);
+    if (isDraggingHue) {
       document.addEventListener('mousemove', handleMouseMove);
       document.addEventListener('mouseup', handleMouseUp);
     }
-
     return () => {
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseup', handleMouseUp);
     };
-  }, [isDraggingSV, isDraggingHue]);
+  }, [isDraggingHue]);
 
-  // Close color picker when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (colorPickerRef.current && !colorPickerRef.current.contains(event.target as Node)) {
         setShowColorPicker(false);
       }
     };
-
-    if (showColorPicker) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
+    if (showColorPicker) document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [showColorPicker]);
 
-  // Get pure hue color for the SV picker background
-  const pureHueColor = hsvToRgb(hue, 100, 100);
-  const pureHueHex = rgbToHex(pureHueColor.r, pureHueColor.g, pureHueColor.b);
+  const pureHueHex = hueToHex(hue);
 
   return (
     <div className="w-56 bg-[#2c2c2c] border-l border-[#1e1e1e] flex flex-col h-full">
@@ -226,41 +142,18 @@ export function FigmaDesignPanel() {
 
           {/* Inline Color Picker */}
           {showColorPicker && (
-            <div 
+            <div
               ref={colorPickerRef}
               className="absolute mt-3 bg-[#1e1e1e] rounded-lg p-3 shadow-2xl z-50 left-0 right-0"
             >
-              {/* Saturation/Value Picker */}
-              <div 
-                ref={svPickerRef}
-                className="relative w-full aspect-[3/4] rounded-lg mb-3 cursor-crosshair"
-                style={{
-                  background: `linear-gradient(to bottom, transparent, black), linear-gradient(to right, white, ${pureHueHex})`
-                }}
-                onMouseDown={handleSVMouseDown}
-              >
-                {/* Picker Handle */}
-                <div 
-                  className="absolute w-4 h-4 border-2 border-white rounded-full shadow-lg pointer-events-none"
-                  style={{
-                    left: `calc(${saturation}% - 8px)`,
-                    top: `calc(${100 - value}% - 8px)`,
-                    boxShadow: '0 0 0 1px rgba(0,0,0,0.3), 0 2px 4px rgba(0,0,0,0.3)'
-                  }}
-                />
-              </div>
-
               {/* Hue Slider */}
-              <div 
+              <div
                 ref={hueSliderRef}
                 className="relative w-full h-3 rounded-full mb-3 cursor-pointer"
-                style={{
-                  background: 'linear-gradient(to right, #ff0000 0%, #ffff00 17%, #00ff00 33%, #00ffff 50%, #0000ff 67%, #ff00ff 83%, #ff0000 100%)'
-                }}
-                onMouseDown={handleHueMouseDown}
+                style={{ background: 'linear-gradient(to right, #ff0000 0%, #ffff00 17%, #00ff00 33%, #00ffff 50%, #0000ff 67%, #ff00ff 83%, #ff0000 100%)' }}
+                onMouseDown={(e) => { setIsDraggingHue(true); updateHue(e); }}
               >
-                {/* Hue Handle */}
-                <div 
+                <div
                   className="absolute w-5 h-5 border-2 border-white rounded-full -top-1 shadow-lg pointer-events-none"
                   style={{
                     left: `calc(${(hue / 360) * 100}% - 10px)`,
