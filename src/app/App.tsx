@@ -24,21 +24,24 @@ export default function App() {
 
   return (
     <ColorProvider>
-      <div className="min-h-screen bg-[#18191B]">
-        <main className="flex flex-col items-center justify-center px-2 sm:px-4 py-4 sm:py-8">
-          {selectedProject ? (
-            // Show project detail without browser wrapper
+      <div className="bg-[#18191B]">
+        {selectedProject ? (
+          <main className="flex flex-col items-center justify-center px-2 sm:px-4 py-4 sm:py-8">
             <div className="w-full max-w-[1400px]">
               <ProjectDetail project={selectedProject} onBack={handleBackToProjects} />
             </div>
-          ) : (
-            // Show normal portfolio view
-            <>
+          </main>
+        ) : (
+          <>
+            <section className="min-h-screen flex flex-col items-center justify-center px-2 sm:px-4 py-8 gap-6">
               <FigmaWindow />
-              <FeaturedProjects onProjectClick={handleProjectClick} />
-            </>
-          )}
-        </main>
+              <svg width="20" height="12" viewBox="0 0 20 12" fill="none" className="text-gray-500 animate-bounce">
+                <path d="M1 1L10 10L19 1" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </section>
+            <FeaturedProjects onProjectClick={handleProjectClick} />
+          </>
+        )}
       </div>
     </ColorProvider>
   );
