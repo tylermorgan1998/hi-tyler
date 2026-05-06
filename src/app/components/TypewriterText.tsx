@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useColor } from "../contexts/ColorContext";
 
-const words = ["packaging", "graphic", "product", "ux", "ui"];
+const words = ["product", "graphic", "ui", "packaging", "ux", "logo", "brand"];
 
 export function TypewriterText() {
   const { accentColor } = useColor();
