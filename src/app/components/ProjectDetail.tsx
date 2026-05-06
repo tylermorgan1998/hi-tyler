@@ -1,4 +1,8 @@
-import { ArrowLeft } from "lucide-react";
+import {
+  ArrowLeft, Info, AlertTriangle, Target, Monitor, MessageSquare,
+  Calendar, Palette, Settings, Star, Users, FilePlus, LayoutDashboard,
+  User, Folder, Briefcase, LucideIcon
+} from "lucide-react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { useColor } from "../contexts/ColorContext";
 
@@ -26,11 +30,7 @@ interface ProjectData {
   sections?: ProjectSection[];
   breakerText?: string;
   sectionsAfterBreaker?: ProjectSection[];
-  metrics?: {
-    value: string;
-    label: string;
-    description?: string;
-  }[];
+  metrics?: { value: string; label: string; description?: string }[];
 }
 
 interface ProjectDetailProps {
@@ -38,47 +38,104 @@ interface ProjectDetailProps {
   onBack: () => void;
 }
 
-function SectionBlock({ section, accentColor }: { section: ProjectSection; accentColor: string }) {
+const SECTION_ICONS: Record<string, LucideIcon> = {
+  "summary": Info,
+  "the problem": AlertTriangle,
+  "design goals": Target,
+  "home screen": Monitor,
+  "dashboard": LayoutDashboard,
+  "task creation": FilePlus,
+  "chat & communication": MessageSquare,
+  "event scheduling": Calendar,
+  "personalization": Palette,
+  "self-service tools": Settings,
+  "feedback": Star,
+  "company walkthrough": Users,
+};
+
+function getIcon(subheading?: string): LucideIcon {
+  if (!subheading) return Info;
+  return SECTION_ICONS[subheading.toLowerCase()] ?? Info;
+}
+
+function InfoCell({
+  icon: Icon, label, value, borderRight, borderTop
+}: {
+  icon: LucideIcon; label: string; value: string;
+  borderRight?: boolean; borderTop?: boolean;
+}) {
   return (
-    <div className="border-t border-[#222] pt-12 pb-4">
-      <div className="max-w-2xl">
-        {section.subheading && (
-          <p className="text-xs uppercase tracking-[0.2em] mb-4 font-medium" style={{ color: accentColor }}>
-            {section.subheading}
-          </p>
-        )}
-        <h2 className="text-white text-2xl sm:text-3xl font-semibold leading-snug mb-6">
-          {section.heading}
+    <div className={`p-6 sm:p-8 ${borderRight ? "border-r border-[#222]" : ""} ${borderTop ? "border-t border-[#222]" : ""}`}>
+      <div className="flex items-center gap-2 mb-3">
+        <Icon size={13} className="text-[#555]" />
+        <span className="text-[#555] text-xs uppercase tracking-widest">{label}</span>
+      </div>
+      <p className="text-white text-sm sm:text-base">{value}</p>
+    </div>
+  );
+}
+
+function ChapterHeader({ subheading, accentColor }: { subheading?: string; accentColor: string }) {
+  if (!subheading) return null;
+  const Icon = getIcon(subheading);
+  return (
+    <div className="mb-10">
+      <div className="flex items-start justify-between mb-4">
+        <h2 className="text-white text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight">
+          {subheading}
         </h2>
-        {Array.isArray(section.paragraph) ? (
-          section.paragraph.map((para, i) => (
-            <p key={i} className="text-[#888] text-base leading-relaxed mb-5 whitespace-pre-line">
-              {para}
-            </p>
-          ))
-        ) : (
-          <p className="text-[#888] text-base leading-relaxed whitespace-pre-line">
-            {section.paragraph}
+        <Icon size={28} className="text-[#333] mt-1 shrink-0 ml-4" />
+      </div>
+      <div className="border-t border-[#222]" />
+    </div>
+  );
+}
+
+function SectionContent({ section, accentColor, fullBleed }: {
+  section: ProjectSection; accentColor: string; fullBleed?: boolean;
+}) {
+  const paragraphs = Array.isArray(section.paragraph) ? section.paragraph : [section.paragraph];
+
+  return (
+    <div className="mb-16">
+      <ChapterHeader subheading={section.subheading} accentColor={accentColor} />
+
+      <div className="max-w-2xl">
+        <h3 className="text-white text-xl sm:text-2xl font-semibold leading-snug mb-5">
+          {section.heading}
+        </h3>
+        {paragraphs.map((para, i) => (
+          <p key={i} className="text-[#888] text-base leading-relaxed mb-4 whitespace-pre-line">
+            {para}
           </p>
-        )}
+        ))}
       </div>
 
       {section.images && section.images.length > 0 && (
-        <div className={`mt-10 grid gap-4 ${
-          section.images.length === 1 ? 'grid-cols-1' :
-          section.images.length === 2 ? 'grid-cols-1 sm:grid-cols-2' :
-          'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'
-        }`}>
-          {section.images.map((imageId, i) => (
-            <div key={i} className="bg-[#1a1a1a] rounded-2xl overflow-hidden aspect-video">
+        <div className={`mt-10 ${section.images.length === 1 && fullBleed ? "-mx-4 sm:-mx-6 lg:-mx-8" : ""}`}>
+          {section.images.length === 1 ? (
+            <div className={`overflow-hidden ${fullBleed ? "" : "rounded-2xl"} bg-[#111]`}>
               <ImageWithFallback
-                src={`https://images.unsplash.com/photo-${imageId}?w=900&h=506&fit=crop&q=85`}
-                alt={`${section.heading} ${i + 1}`}
-                className="w-full h-full object-cover"
+                src={`https://images.unsplash.com/photo-${section.images[0]}?w=1400&h=788&fit=crop&q=85`}
+                alt={section.heading}
+                className="w-full h-auto object-cover"
                 loading="lazy"
               />
             </div>
-          ))}
+          ) : (
+            <div className={`grid gap-3 ${section.images.length === 2 ? "grid-cols-1 sm:grid-cols-2" : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"}`}>
+              {section.images.map((id, i) => (
+                <div key={i} className="rounded-2xl overflow-hidden bg-[#111] aspect-video">
+                  <ImageWithFallback
+                    src={`https://images.unsplash.com/photo-${id}?w=800&h=450&fit=crop&q=85`}
+                    alt={`${section.heading} ${i + 1}`}
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       )}
     </div>
@@ -94,97 +151,85 @@ export function ProjectDetail({ project, onBack }: ProjectDetailProps) {
       {/* Back */}
       <button
         onClick={onBack}
-        className="flex items-center gap-2 text-[#555] hover:text-white transition-colors mb-12 group text-sm"
+        className="flex items-center gap-2 text-[#555] hover:text-white transition-colors mb-14 group text-sm"
       >
-        <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
+        <ArrowLeft size={15} className="group-hover:-translate-x-1 transition-transform" />
         All work
       </button>
 
-      {/* Title block */}
-      <div className="mb-10">
-        <h1 className="text-white text-4xl sm:text-5xl font-semibold leading-tight mb-4">
-          {project.title}
-        </h1>
-        <p className="text-[#888] text-lg leading-relaxed max-w-xl">
-          {project.description}
-        </p>
+      {/* Giant title */}
+      <h1 className="text-white text-5xl sm:text-7xl lg:text-8xl font-bold leading-none tracking-tight mb-6">
+        {project.title}
+      </h1>
+
+      {/* Bold description */}
+      <p className="text-white text-lg sm:text-xl font-medium leading-relaxed max-w-2xl mb-14">
+        {project.description}
+      </p>
+
+      {/* 2×2 info grid */}
+      <div className="grid grid-cols-2 border border-[#222] rounded-2xl overflow-hidden mb-16">
+        <InfoCell icon={User} label="My Role" value={project.role} borderRight />
+        <InfoCell icon={Folder} label="Category" value={project.category} />
+        <InfoCell icon={Calendar} label="Year" value={project.year} borderRight borderTop />
+        <InfoCell icon={Briefcase} label="Type" value="End-to-end Design" borderTop />
       </div>
 
-      {/* Metadata row */}
-      <div className="flex flex-wrap gap-x-10 gap-y-3 mb-14 border-t border-b border-[#222] py-5">
-        <div>
-          <p className="text-[#555] text-xs uppercase tracking-widest mb-1">Role</p>
-          <p className="text-white text-sm">{project.role}</p>
-        </div>
-        <div>
-          <p className="text-[#555] text-xs uppercase tracking-widest mb-1">Category</p>
-          <p className="text-white text-sm">{project.category}</p>
-        </div>
-        <div>
-          <p className="text-[#555] text-xs uppercase tracking-widest mb-1">Year</p>
-          <p className="text-white text-sm">{project.year}</p>
-        </div>
-      </div>
-
-      {/* Hero image */}
-      <div className="bg-[#1a1a1a] rounded-2xl overflow-hidden mb-16">
-        <div className="aspect-[16/9]">
-          <ImageWithFallback
-            src={`https://images.unsplash.com/photo-${project.images[0]}?w=1400&h=788&fit=crop&q=85`}
-            alt={project.title}
-            className="w-full h-full object-cover"
-            loading="eager"
-          />
-        </div>
+      {/* Hero image — full bleed */}
+      <div className="-mx-4 sm:-mx-6 lg:-mx-8 mb-16 bg-[#111]">
+        <ImageWithFallback
+          src={`https://images.unsplash.com/photo-${project.images[0]}?w=1600&h=900&fit=crop&q=90`}
+          alt={project.title}
+          className="w-full h-auto object-cover"
+          loading="eager"
+        />
       </div>
 
       {/* Metrics */}
       {project.metrics && project.metrics.length > 0 && (
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 mb-16 border-t border-b border-[#222] py-10">
-          {project.metrics.map((metric, i) => (
-            <div key={i}>
-              <p className="text-white text-3xl sm:text-4xl font-semibold mb-1">{metric.value}</p>
-              <p className="text-[#555] text-xs leading-snug">{metric.description || metric.label}</p>
+        <div className="grid grid-cols-2 sm:grid-cols-4 border border-[#222] rounded-2xl overflow-hidden mb-20">
+          {project.metrics.map((m, i) => (
+            <div
+              key={i}
+              className={`p-6 sm:p-8 bg-[#111] ${i > 0 ? "border-l border-[#222]" : ""}`}
+            >
+              <p className="text-white text-3xl sm:text-4xl font-bold mb-1">{m.value}</p>
+              <p className="text-[#555] text-xs leading-snug">{m.description || m.label}</p>
             </div>
           ))}
         </div>
       )}
 
-      {/* Sections */}
-      <div className="space-y-12">
-        {project.sections?.map((section, i) => (
-          <SectionBlock key={i} section={section} accentColor={accentColor} />
-        ))}
-      </div>
+      {/* Pre-breaker sections */}
+      {project.sections?.map((section, i) => (
+        <SectionContent key={i} section={section} accentColor={accentColor} fullBleed />
+      ))}
 
-      {/* Breaker quote */}
+      {/* Breaker */}
       {project.breakerText && (
-        <div className="border-t border-[#222] py-16 my-4">
-          <p className="text-white text-2xl sm:text-3xl font-semibold leading-relaxed max-w-2xl">
+        <div className="border-t border-b border-[#222] py-16 my-8">
+          <p className="text-white text-2xl sm:text-3xl lg:text-4xl font-semibold leading-relaxed">
             "{project.breakerText}"
           </p>
         </div>
       )}
 
-      {/* Sections after breaker */}
-      {project.sectionsAfterBreaker && project.sectionsAfterBreaker.length > 0 && (
-        <div className="space-y-12">
-          {project.sectionsAfterBreaker.map((section, i) => (
-            <SectionBlock key={i} section={section} accentColor={accentColor} />
-          ))}
-        </div>
-      )}
+      {/* Post-breaker sections */}
+      {project.sectionsAfterBreaker?.map((section, i) => (
+        <SectionContent key={i} section={section} accentColor={accentColor} fullBleed />
+      ))}
 
-      {/* Back button */}
-      <div className="border-t border-[#222] mt-16 pt-12">
+      {/* Bottom back */}
+      <div className="border-t border-[#222] mt-8 pt-12">
         <button
           onClick={onBack}
           className="flex items-center gap-2 text-[#555] hover:text-white transition-colors group text-sm"
         >
-          <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
+          <ArrowLeft size={15} className="group-hover:-translate-x-1 transition-transform" />
           Back to all work
         </button>
       </div>
+
     </div>
   );
 }
