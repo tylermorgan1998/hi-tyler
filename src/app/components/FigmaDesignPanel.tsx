@@ -304,7 +304,7 @@ export function FigmaDesignPanel() {
               style={{ backgroundColor: accentColor }}
               onClick={() => setShowColorPicker(!showColorPicker)}
             />
-            <span className="text-[#b3b3b3] text-xs">Solid</span>
+            <span className="text-[#b3b3b3] text-xs">Pick a color</span>
           </div>
 
           {/* Inline Color Picker */}

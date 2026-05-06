@@ -76,7 +76,7 @@ export function FigmaWindow() {
           {activeTab === "home" && (
             <div className={`absolute bottom-4 sm:bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 transition-opacity duration-300 ${contentVisible ? 'opacity-100' : 'opacity-0'}`}>
               <span className="text-gray-500 text-xs">Scroll to explore</span>
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="text-gray-500">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="text-gray-500 animate-bounce">
                 <path d="M10 3V17M10 17L15 12M10 17L5 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </div>

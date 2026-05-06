@@ -9,6 +9,12 @@ export function TypewriterText() {
   const [currentText, setCurrentText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
   const [typingSpeed, setTypingSpeed] = useState(150);
+  const [cursorVisible, setCursorVisible] = useState(true);
+
+  useEffect(() => {
+    const interval = setInterval(() => setCursorVisible(v => !v), 530);
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     const currentWord = words[currentWordIndex];
@@ -43,7 +49,7 @@ export function TypewriterText() {
   return (
     <span className="inline-flex items-center" style={{ color: accentColor }}>
       {currentText}
-      <span className="inline-block w-0.5 h-[0.85em] ml-0.5 translate-y-[0.05em]" style={{ backgroundColor: accentColor, animation: 'blink 1s steps(1, end) infinite' }}></span>
+      <span className="inline-block w-0.5 h-[0.85em] ml-0.5 translate-y-[0.05em]" style={{ backgroundColor: accentColor, opacity: cursorVisible ? 1 : 0 }}></span>
     </span>
   );
 }
