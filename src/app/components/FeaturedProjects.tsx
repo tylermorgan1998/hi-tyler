@@ -1,4 +1,4 @@
-import { ImageWithFallback } from "./figma/ImageWithFallback";
+import { useColor } from "../contexts/ColorContext";
 import { projectsData } from "../data/projects";
 
 interface FeaturedProjectsProps {
@@ -6,78 +6,66 @@ interface FeaturedProjectsProps {
 }
 
 export function FeaturedProjects({ onProjectClick }: FeaturedProjectsProps) {
-  const projects = [
-    {
-      title: "Nexus",
-      description: "Creating a more personal, less frustrating way to get tech support",
-      imageQuery: "tech support",
-      id: "nexus",
-    },
-    {
-      title: "Tribe.so Admin onboarding",
-      description: "Increase user engagment",
-      imageQuery: "dashboard interface",
-      id: "tribe-so-admin",
-    },
-    {
-      title: "Lendscape",
-      description: "Lend and Borrow Dashboard",
-      imageQuery: "crypto dashboard",
-      id: "lendscape",
-    },
-    {
-      title: "Flop App",
-      description: "Social media for poker players",
-      imageQuery: "mobile app poker",
-      id: "flop-app",
-    },
-  ];
+  const { accentColor } = useColor();
 
   return (
-    <div id="featured-projects" className="w-full py-12 sm:py-16 lg:py-20">
-      <h2 className="text-gray-400 text-center mb-8 sm:mb-12">Featured Projects</h2>
-      
-      <div className="flex flex-col gap-12 sm:gap-16 max-w-[900px] mx-auto px-4">
-        {projects.map((project, index) => (
-          <div
-            key={index}
-            onClick={() => onProjectClick(project.id)}
-            className="group cursor-pointer transition-transform hover:scale-[1.01]"
-          >
-            {/* Image area - white/light background card */}
-            <div className="bg-[#f5f5f5] rounded-2xl p-8 sm:p-12 lg:p-16 flex items-center justify-center min-h-[300px] sm:min-h-[400px] mb-4">
-              <div className="w-full max-w-[300px] sm:max-w-[400px]">
-                <ImageWithFallback
-                  src={index === 0 ? "https://i.imgur.com/9hBZYWL.jpeg" : `https://images.unsplash.com/photo-${getUnsplashId(index)}?w=600&h=400&fit=crop`}
-                  alt={project.title}
-                  className="w-full h-auto object-contain"
-                />
-              </div>
-            </div>
+    <section id="featured-projects" className="w-full max-w-[1200px] mx-auto px-4 sm:px-8 pb-24">
+      {projectsData.map((project) => (
+        <div key={project.id} className="border-t border-[#2a2a2a] py-14 sm:py-20">
+          <div className="flex flex-col lg:flex-row gap-10 lg:gap-16 items-start">
 
-            {/* Text area - on dark background below card */}
-            <div className="px-2">
-              <h3 className="text-white mb-1">
+            {/* Left: text */}
+            <div className="lg:w-[34%] flex flex-col gap-4">
+              <h2 className="text-white text-2xl sm:text-3xl font-semibold leading-tight">
                 {project.title}
-              </h3>
-              <p className="text-gray-400 text-sm">
+              </h2>
+              <p className="text-[#888] text-sm leading-relaxed">
                 {project.description}
               </p>
+              <span className="text-sm font-medium" style={{ color: accentColor }}>
+                {project.role}
+              </span>
+              <div className="flex flex-wrap gap-2">
+                <span className="text-xs px-3 py-1 border border-[#333] rounded-full text-[#666]">
+                  {project.category}
+                </span>
+                <span className="text-xs px-3 py-1 border border-[#333] rounded-full text-[#666]">
+                  {project.year}
+                </span>
+              </div>
+              <button
+                onClick={() => onProjectClick(project.id)}
+                className="mt-2 flex items-center gap-2 text-sm text-[#888] hover:text-white transition-colors w-fit group"
+              >
+                View Case Study
+                <span className="w-5 h-5 rounded-full border border-[#555] flex items-center justify-center group-hover:border-white transition-colors">
+                  <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
+                    <path d="M2 6L6 2M6 2H3M6 2V5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </span>
+              </button>
             </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
 
-// Helper function to get different placeholder images
-function getUnsplashId(index: number): string {
-  const ids = [
-    "1551288049-29ac87e57e47", // tech support
-    "1460925895917-afdab827c52f", // dashboard
-    "1551288049-29ac87e57e47", // crypto/finance
-    "1512941937669-90a1b58e7e9c", // mobile app
-  ];
-  return ids[index];
+            {/* Right: image */}
+            <div
+              className="lg:w-[66%] bg-[#f0f0ee] rounded-2xl overflow-hidden relative cursor-pointer"
+              onClick={() => onProjectClick(project.id)}
+            >
+              <div className="p-6 sm:p-10 min-h-[280px] sm:min-h-[380px] flex items-center justify-center">
+                <img
+                  src={`https://images.unsplash.com/photo-${project.images[0]}?w=900&h=560&fit=crop`}
+                  alt={project.title}
+                  className="w-full h-auto rounded-lg object-cover shadow-sm"
+                />
+              </div>
+              <span className="absolute bottom-4 right-5 text-[#bbb] text-xs tracking-widest">
+                {project.year}
+              </span>
+            </div>
+
+          </div>
+        </div>
+      ))}
+    </section>
+  );
 }
