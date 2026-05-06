@@ -205,89 +205,6 @@ export function FigmaDesignPanel() {
 
       {/* Content */}
       <div className="flex-1 overflow-y-auto px-4 py-3 space-y-4">
-        {/* Position & Size */}
-        <div>
-          <div className="text-[#666] text-xs mb-2">Position</div>
-          <div className="grid grid-cols-2 gap-2">
-            <div>
-              <div className="text-[#666] text-xs mb-1">X</div>
-              <input
-                type="text"
-                value="560"
-                className="w-full bg-[#1e1e1e] text-[#b3b3b3] text-xs px-2 py-1.5 rounded outline-none focus:ring-1 focus:ring-[#18a0fb]"
-                readOnly
-              />
-            </div>
-            <div>
-              <div className="text-[#666] text-xs mb-1">Y</div>
-              <input
-                type="text"
-                value="320"
-                className="w-full bg-[#1e1e1e] text-[#b3b3b3] text-xs px-2 py-1.5 rounded outline-none focus:ring-1 focus:ring-[#18a0fb]"
-                readOnly
-              />
-            </div>
-          </div>
-        </div>
-
-        <div>
-          <div className="text-[#666] text-xs mb-2">Size</div>
-          <div className="grid grid-cols-2 gap-2">
-            <div>
-              <div className="text-[#666] text-xs mb-1">W</div>
-              <input
-                type="text"
-                value="800"
-                className="w-full bg-[#1e1e1e] text-[#b3b3b3] text-xs px-2 py-1.5 rounded outline-none focus:ring-1 focus:ring-[#18a0fb]"
-                readOnly
-              />
-            </div>
-            <div>
-              <div className="text-[#666] text-xs mb-1">H</div>
-              <input
-                type="text"
-                value="440"
-                className="w-full bg-[#1e1e1e] text-[#b3b3b3] text-xs px-2 py-1.5 rounded outline-none focus:ring-1 focus:ring-[#18a0fb]"
-                readOnly
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* Rotation & Radius */}
-        <div className="grid grid-cols-2 gap-2">
-          <div>
-            <div className="text-[#666] text-xs mb-1">
-              <svg width="10" height="10" viewBox="0 0 10 10" fill="none" className="inline mr-1">
-                <path d="M5 1V3M2 5H4M5 9V7" stroke="currentColor" strokeWidth="1" strokeLinecap="round"/>
-                <path d="M7 3.5C7 4.5 6.5 5.5 5 5.5" stroke="currentColor" strokeWidth="1" strokeLinecap="round"/>
-              </svg>
-              Rotation
-            </div>
-            <input
-              type="text"
-              value="0°"
-              className="w-full bg-[#1e1e1e] text-[#b3b3b3] text-xs px-2 py-1.5 rounded outline-none focus:ring-1 focus:ring-[#18a0fb]"
-              readOnly
-            />
-          </div>
-          <div>
-            <div className="text-[#666] text-xs mb-1">
-              <svg width="10" height="10" viewBox="0 0 10 10" fill="none" className="inline mr-1">
-                <path d="M2 2H8V8H2V2Z" stroke="currentColor" strokeWidth="1" fill="none"/>
-                <circle cx="7" cy="3" r="1" fill="currentColor"/>
-              </svg>
-              Radius
-            </div>
-            <input
-              type="text"
-              value="0"
-              className="w-full bg-[#1e1e1e] text-[#b3b3b3] text-xs px-2 py-1.5 rounded outline-none focus:ring-1 focus:ring-[#18a0fb]"
-              readOnly
-            />
-          </div>
-        </div>
-
         {/* Fill */}
         <div className="relative">
           <div className="text-[#666] text-xs mb-2 flex items-center justify-between">
@@ -362,19 +279,6 @@ export function FigmaDesignPanel() {
               </div>
             </div>
           )}
-        </div>
-
-        {/* Stroke */}
-        <div>
-          <div className="text-[#666] text-xs mb-2 flex items-center justify-between">
-            <span>Stroke</span>
-            <button className="text-[#666] hover:text-[#b3b3b3]">
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                <path d="M6 3V9M3 6H9" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/>
-              </svg>
-            </button>
-          </div>
-          <div className="text-[#666] text-xs">No stroke</div>
         </div>
 
         {/* Effects */}
