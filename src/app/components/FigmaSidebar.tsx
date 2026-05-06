@@ -63,11 +63,6 @@ export function FigmaSidebar() {
                   <span className="text-[#666] text-xs flex-1">Subheading</span>
                 </div>
 
-                <div className="flex items-center gap-1 py-1 px-2 hover:bg-[#383838] rounded cursor-pointer">
-                  <div className="w-3" />
-                  <RectangleHorizontal size={12} className="text-[#666]" />
-                  <span className="text-[#666] text-xs flex-1">CTA Button</span>
-                </div>
               </div>
             </div>
 
