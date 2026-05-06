@@ -5,10 +5,12 @@ import { FigmaDesignPanel } from "./FigmaDesignPanel";
 import { HeroContent } from "./HeroContent";
 import { AboutContent } from "./AboutContent";
 import { BlockBreakContent } from "./BlockBreakContent";
+import { useColor } from "../contexts/ColorContext";
 
 export function FigmaWindow() {
   const [activeTab, setActiveTab] = useState<"home" | "about" | "game">("home");
   const [contentVisible, setContentVisible] = useState(true);
+  const { accentColor } = useColor();
 
   const handleTabChange = (tab: "home" | "about" | "game") => {
     setContentVisible(false);
@@ -38,11 +40,12 @@ export function FigmaWindow() {
         </div>
 
         <div className="flex items-center gap-1.5 sm:gap-3">
-          <button className="bg-[#5865f2] text-white px-2 sm:px-3 py-1 sm:py-1.5 rounded text-xs hover:bg-[#4752c4] transition-colors hidden sm:block">
-            Present
-          </button>
-          
-          <div className="w-6 h-6 sm:w-8 sm:h-8 bg-gradient-to-br from-[#ec4899] to-[#a855f7] rounded-full"></div>
+          <div
+            className="w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center"
+            style={{ backgroundColor: accentColor }}
+          >
+            <span className="text-white font-bold text-xs sm:text-sm select-none">T</span>
+          </div>
         </div>
       </div>
 
