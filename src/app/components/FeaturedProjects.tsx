@@ -10,8 +10,8 @@ export function FeaturedProjects({ onProjectClick }: FeaturedProjectsProps) {
 
   return (
     <section id="featured-projects" className="w-full max-w-[1200px] mx-auto px-4 sm:px-8 pb-24">
-      {projectsData.map((project) => (
-        <div key={project.id} className="border-t border-[#2a2a2a] py-14 sm:py-20">
+      {projectsData.map((project, index) => (
+        <div key={project.id} className={`${index !== 0 ? 'border-t border-[#2a2a2a]' : ''} py-14 sm:py-20`}>
           <div className="flex flex-col lg:flex-row gap-10 lg:gap-16 items-start">
 
             {/* Left: text */}

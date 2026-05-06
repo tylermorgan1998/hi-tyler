@@ -33,7 +33,7 @@ export default function App() {
           </main>
         ) : (
           <>
-            <section className="min-h-screen flex flex-col items-center justify-center px-2 sm:px-4 py-8 gap-6">
+            <section className="min-h-screen flex flex-col items-center justify-center px-2 sm:px-4 py-8 gap-12">
               <FigmaWindow />
               <svg width="20" height="12" viewBox="0 0 20 12" fill="none" className="text-gray-500 animate-bounce">
                 <path d="M1 1L10 10L19 1" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
