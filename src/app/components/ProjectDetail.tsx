@@ -157,22 +157,21 @@ export function ProjectDetail({ project, onBack }: ProjectDetailProps) {
         All work
       </button>
 
-      {/* Giant title */}
-      <h1 className="text-white text-5xl sm:text-7xl lg:text-8xl font-bold leading-none tracking-tight mb-6">
-        {project.title}
-      </h1>
+      {/* Title + description — centered */}
+      <div className="text-center mb-10">
+        <h1 className="text-white text-5xl sm:text-7xl lg:text-8xl font-bold leading-none tracking-tight mb-6">
+          {project.title}
+        </h1>
+        <p className="text-[#888] text-lg sm:text-xl leading-relaxed max-w-2xl mx-auto">
+          {project.description}
+        </p>
+      </div>
 
-      {/* Bold description */}
-      <p className="text-white text-lg sm:text-xl font-medium leading-relaxed max-w-2xl mb-14">
-        {project.description}
-      </p>
-
-      {/* 2×2 info grid */}
-      <div className="grid grid-cols-2 border border-[#222] rounded-2xl overflow-hidden mb-16">
-        <InfoCell icon={User} label="My Role" value={project.role} borderRight />
-        <InfoCell icon={Folder} label="Category" value={project.category} />
-        <InfoCell icon={Calendar} label="Year" value={project.year} borderRight borderTop />
-        <InfoCell icon={Briefcase} label="Type" value="End-to-end Design" borderTop />
+      {/* Pill tags */}
+      <div className="flex flex-wrap justify-center gap-2 mb-16">
+        <span className="text-xs px-3 py-1 border border-[#333] rounded-full text-[#666]">{project.category}</span>
+        <span className="text-xs px-3 py-1 border border-[#333] rounded-full text-[#666]">{project.year}</span>
+        <span className="text-xs px-3 py-1 border border-[#333] rounded-full text-[#666]">End-to-end Design</span>
       </div>
 
       {/* Hero image — full bleed */}
