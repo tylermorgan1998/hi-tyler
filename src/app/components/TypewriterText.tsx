@@ -41,9 +41,9 @@ export function TypewriterText() {
   }, [currentText, isDeleting, currentWordIndex, typingSpeed]);
 
   return (
-    <span className="inline-flex items-baseline" style={{ color: accentColor }}>
+    <span className="inline-flex items-center" style={{ color: accentColor }}>
       {currentText}
-      <span className="inline-block w-0.5 h-8 ml-1 animate-pulse" style={{ backgroundColor: accentColor }}></span>
+      <span className="inline-block w-0.5 h-[0.85em] ml-0.5 translate-y-[0.05em] cursor-blink" style={{ backgroundColor: accentColor }}></span>
     </span>
   );
 }
