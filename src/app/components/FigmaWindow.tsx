@@ -32,11 +32,8 @@ export function FigmaWindow() {
           
           {/* Figma logo and file name */}
           <div className="flex items-center gap-1.5 sm:gap-2 ml-2 sm:ml-4">
-            <span className="text-white text-xs sm:text-sm hidden sm:inline">Tyler's Portfolio</span>
-            <span className="text-white text-xs sm:hidden">Portfolio</span>
-            <svg width="10" height="6" viewBox="0 0 10 6" fill="none" className="text-gray-400 hidden sm:block">
-              <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
+            <span className="text-[#666] text-xs sm:text-sm hidden sm:inline">Tyler's Portfolio</span>
+            <span className="text-[#666] text-xs sm:hidden">Portfolio</span>
           </div>
         </div>
 
@@ -45,10 +42,10 @@ export function FigmaWindow() {
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="text-gray-400">
               <path d="M6 1L8 3M8 3L10 1M8 3V9M2 11H10" stroke="currentColor" strokeWidth="1" strokeLinecap="round"/>
             </svg>
-            <span className="text-white text-xs">100%</span>
+            <span className="text-[#666] text-xs">100%</span>
           </div>
           
-          <button className="bg-[#3a3a3a] text-gray-300 px-2 sm:px-3 py-1 sm:py-1.5 rounded text-xs flex items-center gap-1 sm:gap-1.5 hover:bg-[#404040] transition-colors hidden sm:flex">
+          <button className="bg-[#3a3a3a] text-[#666] px-2 sm:px-3 py-1 sm:py-1.5 rounded text-xs flex items-center gap-1 sm:gap-1.5 hover:bg-[#404040] transition-colors hidden sm:flex">
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
               <path d="M8 4L10 6L8 8M4 4L2 6L4 8" stroke="currentColor" strokeWidth="1" strokeLinecap="round"/>
             </svg>

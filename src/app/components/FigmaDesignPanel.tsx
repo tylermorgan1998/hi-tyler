@@ -200,14 +200,14 @@ export function FigmaDesignPanel() {
     <div className="w-56 bg-[#2c2c2c] border-l border-[#1e1e1e] flex flex-col h-full">
       {/* Header */}
       <div className="px-3 py-2 border-b border-[#1e1e1e]">
-        <span className="text-[#b3b3b3] text-xs">Design</span>
+        <span className="text-[#666] text-xs">Design</span>
       </div>
 
       {/* Content */}
       <div className="flex-1 overflow-y-auto px-4 py-3 space-y-4">
         {/* Position & Size */}
         <div>
-          <div className="text-[#b3b3b3] text-xs mb-2">Position</div>
+          <div className="text-[#666] text-xs mb-2">Position</div>
           <div className="grid grid-cols-2 gap-2">
             <div>
               <div className="text-[#666] text-xs mb-1">X</div>
@@ -231,7 +231,7 @@ export function FigmaDesignPanel() {
         </div>
 
         <div>
-          <div className="text-[#b3b3b3] text-xs mb-2">Size</div>
+          <div className="text-[#666] text-xs mb-2">Size</div>
           <div className="grid grid-cols-2 gap-2">
             <div>
               <div className="text-[#666] text-xs mb-1">W</div>
@@ -290,7 +290,7 @@ export function FigmaDesignPanel() {
 
         {/* Fill */}
         <div className="relative">
-          <div className="text-[#b3b3b3] text-xs mb-2 flex items-center justify-between">
+          <div className="text-[#666] text-xs mb-2 flex items-center justify-between">
             <span>Fill</span>
             <button className="text-[#666] hover:text-[#b3b3b3]">
               <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
@@ -366,7 +366,7 @@ export function FigmaDesignPanel() {
 
         {/* Stroke */}
         <div>
-          <div className="text-[#b3b3b3] text-xs mb-2 flex items-center justify-between">
+          <div className="text-[#666] text-xs mb-2 flex items-center justify-between">
             <span>Stroke</span>
             <button className="text-[#666] hover:text-[#b3b3b3]">
               <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
@@ -379,7 +379,7 @@ export function FigmaDesignPanel() {
 
         {/* Effects */}
         <div>
-          <div className="text-[#b3b3b3] text-xs mb-2 flex items-center justify-between">
+          <div className="text-[#666] text-xs mb-2 flex items-center justify-between">
             <span>Effects</span>
             <button className="text-[#666] hover:text-[#b3b3b3]">
               <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
@@ -389,11 +389,11 @@ export function FigmaDesignPanel() {
           </div>
           <div className="bg-[#1e1e1e] rounded p-2">
             <div className="flex items-center gap-2 mb-1">
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="text-[#b3b3b3]">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="text-[#666]">
                 <circle cx="6" cy="6" r="3" stroke="currentColor" strokeWidth="1" fill="none"/>
                 <circle cx="6" cy="6" r="1" fill="currentColor"/>
               </svg>
-              <span className="text-[#b3b3b3] text-xs">Drop shadow</span>
+              <span className="text-[#666] text-xs">Drop shadow</span>
             </div>
             <div className="text-[#666] text-xs">0, 4, 8, 0</div>
           </div>
