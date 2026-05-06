@@ -26,9 +26,11 @@ export default function App() {
     <ColorProvider>
       <div className="bg-[#18191B]">
         {selectedProject ? (
-          <div className="min-h-screen bg-[#fafaf8]">
-            <ProjectDetail project={selectedProject} onBack={handleBackToProjects} />
-          </div>
+          <main className="flex flex-col items-center justify-center px-2 sm:px-4 py-4 sm:py-8">
+            <div className="w-full max-w-[1400px]">
+              <ProjectDetail project={selectedProject} onBack={handleBackToProjects} />
+            </div>
+          </main>
         ) : (
           <>
             <section className="min-h-screen flex flex-col items-center justify-center px-2 sm:px-4 py-8 gap-12">

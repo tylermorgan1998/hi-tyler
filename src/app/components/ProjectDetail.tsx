@@ -1,7 +1,7 @@
 import {
   ArrowLeft, Info, AlertTriangle, Target, Monitor, MessageSquare,
   Calendar, Palette, Settings, Star, Users, FilePlus, LayoutDashboard,
-  User, Folder, Briefcase, TrendingUp, LucideIcon
+  User, Folder, Briefcase, LucideIcon
 } from "lucide-react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { useColor } from "../contexts/ColorContext";
@@ -58,56 +58,77 @@ function getIcon(subheading?: string): LucideIcon {
   return SECTION_ICONS[subheading.toLowerCase()] ?? Info;
 }
 
-function ChapterHeader({ subheading }: { subheading?: string }) {
-  if (!subheading) return null;
-  const Icon = getIcon(subheading);
+function InfoCell({
+  icon: Icon, label, value, borderRight, borderTop
+}: {
+  icon: LucideIcon; label: string; value: string;
+  borderRight?: boolean; borderTop?: boolean;
+}) {
   return (
-    <div className="mb-8 mt-16">
-      <div className="flex items-start justify-between mb-3">
-        <h2 className="text-[#111] text-3xl sm:text-4xl font-bold leading-tight capitalize">
-          {subheading}
-        </h2>
-        <Icon size={28} className="text-[#ccc] mt-1 shrink-0 ml-4" />
+    <div className={`p-6 sm:p-8 ${borderRight ? "border-r border-[#222]" : ""} ${borderTop ? "border-t border-[#222]" : ""}`}>
+      <div className="flex items-center gap-2 mb-3">
+        <Icon size={13} className="text-[#555]" />
+        <span className="text-[#555] text-xs uppercase tracking-widest">{label}</span>
       </div>
-      <div className="border-t border-[#e0e0e0]" />
+      <p className="text-white text-sm sm:text-base">{value}</p>
     </div>
   );
 }
 
-function SectionBlock({ section, accentColor }: { section: ProjectSection; accentColor: string }) {
+function ChapterHeader({ subheading, accentColor }: { subheading?: string; accentColor: string }) {
+  if (!subheading) return null;
+  const Icon = getIcon(subheading);
+  return (
+    <div className="mb-10">
+      <div className="flex items-start justify-between mb-4">
+        <h2 className="text-white text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight">
+          {subheading}
+        </h2>
+        <Icon size={28} className="text-[#333] mt-1 shrink-0 ml-4" />
+      </div>
+      <div className="border-t border-[#222]" />
+    </div>
+  );
+}
+
+function SectionContent({ section, accentColor, fullBleed }: {
+  section: ProjectSection; accentColor: string; fullBleed?: boolean;
+}) {
   const paragraphs = Array.isArray(section.paragraph) ? section.paragraph : [section.paragraph];
 
   return (
-    <div className="mb-12">
-      <ChapterHeader subheading={section.subheading} />
+    <div className="mb-16">
+      <ChapterHeader subheading={section.subheading} accentColor={accentColor} />
 
-      <div className="max-w-2xl mt-8">
-        <h3 className="text-[#111] text-xl sm:text-2xl font-semibold leading-snug mb-4">
+      <div className="max-w-2xl">
+        <h3 className="text-white text-xl sm:text-2xl font-semibold leading-snug mb-5">
           {section.heading}
         </h3>
         {paragraphs.map((para, i) => (
-          <p key={i} className="text-[#555] text-base leading-relaxed mb-4 whitespace-pre-line">
+          <p key={i} className="text-[#888] text-base leading-relaxed mb-4 whitespace-pre-line">
             {para}
           </p>
         ))}
       </div>
 
       {section.images && section.images.length > 0 && (
-        <div className={`mt-10 ${section.images.length === 1 ? "-mx-4 sm:-mx-6 lg:-mx-16" : ""}`}>
+        <div className={`mt-10 ${section.images.length === 1 && fullBleed ? "-mx-4 sm:-mx-6 lg:-mx-8" : ""}`}>
           {section.images.length === 1 ? (
-            <ImageWithFallback
-              src={`https://images.unsplash.com/photo-${section.images[0]}?w=1400&h=788&fit=crop&q=85`}
-              alt={section.heading}
-              className="w-full h-auto object-cover"
-              loading="lazy"
-            />
+            <div className={`overflow-hidden ${fullBleed ? "" : "rounded-2xl"} bg-[#111]`}>
+              <ImageWithFallback
+                src={`https://images.unsplash.com/photo-${section.images[0]}?w=1400&h=788&fit=crop&q=85`}
+                alt={section.heading}
+                className="w-full h-auto object-cover"
+                loading="lazy"
+              />
+            </div>
           ) : (
-            <div className={`grid gap-3 ${section.images.length === 2 ? "grid-cols-2" : "grid-cols-2 sm:grid-cols-3"}`}>
+            <div className={`grid gap-3 ${section.images.length === 2 ? "grid-cols-1 sm:grid-cols-2" : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"}`}>
               {section.images.map((id, i) => (
-                <div key={i} className="rounded-xl overflow-hidden aspect-video bg-[#eee]">
+                <div key={i} className="rounded-2xl overflow-hidden bg-[#111] aspect-video">
                   <ImageWithFallback
                     src={`https://images.unsplash.com/photo-${id}?w=800&h=450&fit=crop&q=85`}
-                    alt={`Image ${i + 1}`}
+                    alt={`${section.heading} ${i + 1}`}
                     className="w-full h-full object-cover"
                     loading="lazy"
                   />
@@ -125,73 +146,37 @@ export function ProjectDetail({ project, onBack }: ProjectDetailProps) {
   const { accentColor } = useColor();
 
   return (
-    <div className="w-full max-w-[820px] mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
+    <div className="w-full max-w-[860px] mx-auto px-4 sm:px-6 py-10 sm:py-16">
 
       {/* Back */}
       <button
         onClick={onBack}
-        className="flex items-center gap-2 text-[#999] hover:text-[#111] transition-colors mb-14 group text-sm"
+        className="flex items-center gap-2 text-[#555] hover:text-white transition-colors mb-14 group text-sm"
       >
         <ArrowLeft size={15} className="group-hover:-translate-x-1 transition-transform" />
         All work
       </button>
 
       {/* Giant title */}
-      <h1 className="text-[#111] text-5xl sm:text-7xl lg:text-8xl font-bold leading-none tracking-tight mb-6">
+      <h1 className="text-white text-5xl sm:text-7xl lg:text-8xl font-bold leading-none tracking-tight mb-6">
         {project.title}
       </h1>
 
-      {/* Description — bold black intro + accent colored follow-on */}
-      <p className="text-[#111] text-lg sm:text-xl font-semibold leading-relaxed max-w-2xl mb-3">
+      {/* Bold description */}
+      <p className="text-white text-lg sm:text-xl font-medium leading-relaxed max-w-2xl mb-14">
         {project.description}
       </p>
 
-      {project.sections?.[0] && (
-        <p className="text-base leading-relaxed max-w-2xl mb-14" style={{ color: accentColor }}>
-          {Array.isArray(project.sections[0].paragraph)
-            ? project.sections[0].paragraph[0]
-            : project.sections[0].paragraph}
-        </p>
-      )}
-
       {/* 2×2 info grid */}
-      <div className="grid grid-cols-2 border border-[#e0e0e0] rounded-2xl overflow-hidden mb-16 text-sm">
-        <div className="p-6 border-r border-b border-[#e0e0e0]">
-          <div className="flex items-center gap-2 mb-2">
-            <User size={12} className="text-[#999]" />
-            <span className="text-[#999] text-xs uppercase tracking-widest font-medium">My Role</span>
-          </div>
-          <p className="text-[#111] font-medium">{project.role}</p>
-        </div>
-        <div className="p-6 border-b border-[#e0e0e0]">
-          <div className="flex items-center gap-2 mb-2">
-            <Folder size={12} className="text-[#999]" />
-            <span className="text-[#999] text-xs uppercase tracking-widest font-medium">Category</span>
-          </div>
-          <p className="text-[#111] font-medium">{project.category}</p>
-        </div>
-        <div className="p-6 border-r border-[#e0e0e0]">
-          <div className="flex items-center gap-2 mb-2">
-            <Calendar size={12} className="text-[#999]" />
-            <span className="text-[#999] text-xs uppercase tracking-widest font-medium">Year</span>
-          </div>
-          <p className="text-[#111] font-medium">{project.year}</p>
-        </div>
-        <div className="p-6">
-          <div className="flex items-center gap-2 mb-2">
-            <TrendingUp size={12} className="text-[#999]" />
-            <span className="text-[#999] text-xs uppercase tracking-widest font-medium">Impact</span>
-          </div>
-          {project.metrics?.[0] ? (
-            <p className="text-[#111] font-medium">{project.metrics[0].value} {project.metrics[0].description}</p>
-          ) : (
-            <p className="text-[#111] font-medium">End-to-end Design</p>
-          )}
-        </div>
+      <div className="grid grid-cols-2 border border-[#222] rounded-2xl overflow-hidden mb-16">
+        <InfoCell icon={User} label="My Role" value={project.role} borderRight />
+        <InfoCell icon={Folder} label="Category" value={project.category} />
+        <InfoCell icon={Calendar} label="Year" value={project.year} borderRight borderTop />
+        <InfoCell icon={Briefcase} label="Type" value="End-to-end Design" borderTop />
       </div>
 
       {/* Hero image — full bleed */}
-      <div className="-mx-4 sm:-mx-6 lg:-mx-8 mb-16 bg-[#eee]">
+      <div className="-mx-4 sm:-mx-6 lg:-mx-8 mb-16 bg-[#111]">
         <ImageWithFallback
           src={`https://images.unsplash.com/photo-${project.images[0]}?w=1600&h=900&fit=crop&q=90`}
           alt={project.title}
@@ -200,27 +185,30 @@ export function ProjectDetail({ project, onBack }: ProjectDetailProps) {
         />
       </div>
 
-      {/* Metrics row */}
+      {/* Metrics */}
       {project.metrics && project.metrics.length > 0 && (
-        <div className="grid grid-cols-2 sm:grid-cols-4 border border-[#e0e0e0] rounded-2xl overflow-hidden mb-16 text-sm">
+        <div className="grid grid-cols-2 sm:grid-cols-4 border border-[#222] rounded-2xl overflow-hidden mb-20">
           {project.metrics.map((m, i) => (
-            <div key={i} className={`p-6 ${i > 0 ? "border-l border-[#e0e0e0]" : ""}`}>
-              <p className="text-[#111] text-3xl sm:text-4xl font-bold mb-1">{m.value}</p>
-              <p className="text-[#999] text-xs leading-snug">{m.description || m.label}</p>
+            <div
+              key={i}
+              className={`p-6 sm:p-8 bg-[#111] ${i > 0 ? "border-l border-[#222]" : ""}`}
+            >
+              <p className="text-white text-3xl sm:text-4xl font-bold mb-1">{m.value}</p>
+              <p className="text-[#555] text-xs leading-snug">{m.description || m.label}</p>
             </div>
           ))}
         </div>
       )}
 
-      {/* Skip first section (already shown as intro text above) */}
-      {project.sections?.slice(1).map((section, i) => (
-        <SectionBlock key={i} section={section} accentColor={accentColor} />
+      {/* Pre-breaker sections */}
+      {project.sections?.map((section, i) => (
+        <SectionContent key={i} section={section} accentColor={accentColor} fullBleed />
       ))}
 
       {/* Breaker */}
       {project.breakerText && (
-        <div className="border-t border-b border-[#e0e0e0] py-14 my-8">
-          <p className="text-[#111] text-2xl sm:text-3xl font-semibold leading-relaxed">
+        <div className="border-t border-b border-[#222] py-16 my-8">
+          <p className="text-white text-2xl sm:text-3xl lg:text-4xl font-semibold leading-relaxed">
             "{project.breakerText}"
           </p>
         </div>
@@ -228,19 +216,20 @@ export function ProjectDetail({ project, onBack }: ProjectDetailProps) {
 
       {/* Post-breaker sections */}
       {project.sectionsAfterBreaker?.map((section, i) => (
-        <SectionBlock key={i} section={section} accentColor={accentColor} />
+        <SectionContent key={i} section={section} accentColor={accentColor} fullBleed />
       ))}
 
       {/* Bottom back */}
-      <div className="border-t border-[#e0e0e0] mt-16 pt-10">
+      <div className="border-t border-[#222] mt-8 pt-12">
         <button
           onClick={onBack}
-          className="flex items-center gap-2 text-[#999] hover:text-[#111] transition-colors group text-sm"
+          className="flex items-center gap-2 text-[#555] hover:text-white transition-colors group text-sm"
         >
           <ArrowLeft size={15} className="group-hover:-translate-x-1 transition-transform" />
           Back to all work
         </button>
       </div>
+
     </div>
   );
 }
