@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import Spline from '@splinetool/react-spline@4.0.0';
+import Spline from '@splinetool/react-spline';
 import profileImage from 'figma:asset/146c8897395bc3e0c534fe834180dfb06ceb920f.png';
 
 const SplineScene = memo(() => (
