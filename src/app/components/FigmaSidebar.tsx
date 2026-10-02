@@ -49,12 +49,11 @@ export function FigmaSidebar() {
                 <span className="text-[#666] text-xs flex-1">Hero Section</span>
               </div>
 
-              {/* Intro Text - selected */}
               <div className="ml-3">
-                <div className="flex items-center gap-1 py-1 px-2 bg-[#18a0fb] rounded cursor-pointer">
+                <div className="flex items-center gap-1 py-1 px-2 hover:bg-[#383838] rounded cursor-pointer">
                   <div className="w-3" />
-                  <Type size={12} className="text-white" />
-                  <span className="text-white text-xs flex-1">Intro Text</span>
+                  <Type size={12} className="text-[#666]" />
+                  <span className="text-[#666] text-xs flex-1">Intro Text</span>
                 </div>
 
                 <div className="flex items-center gap-1 py-1 px-2 hover:bg-[#383838] rounded cursor-pointer">

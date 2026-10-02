@@ -1,5 +1,6 @@
 import nexusCover from "../../assets/nexus-cover.png";
 import synergyCover from "../../assets/synergy-cover.png";
+import synergyCard from "../../assets/synergy-card.png";
 import synergyMobile from "../../assets/synergy-mobile.png";
 import synergyViews from "../../assets/synergy-views.png";
 import synergyConflict from "../../assets/synergy-conflict.png";
@@ -31,6 +32,8 @@ export interface ProjectData {
   results?: string[];
   images: string[]; // Unsplash photo IDs
   coverImage?: string; // Local cover image; used instead of images[0] when set
+  cardImage?: string; // Image on the home page card; falls back to coverImage
+  tags?: string[]; // Pills on the home page card; falls back to [category]
   // New flexible structure
   sections?: {
     subheading?: string;
@@ -62,9 +65,11 @@ export const projectsData: ProjectData[] = [
     category: "Product Design",
     year: "2024",
     role: "Sole Designer",
-    bgColor: "bg-[#3a3a3a]",
+    bgColor: "bg-[#3b6ef6]",
     imageQuery: "synergy",
     coverImage: synergyCover,
+    cardImage: synergyCard,
+    tags: ["Product Design", "UI / UX", "Figma"],
     images: ["1460925895917-afdab827c52f"],
     sections: [
       {

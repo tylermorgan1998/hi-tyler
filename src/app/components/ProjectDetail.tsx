@@ -32,6 +32,7 @@ interface ProjectData {
   results?: string[];
   images: string[];
   coverImage?: string;
+  tags?: string[];
   sections?: ProjectSection[];
   breakerText?: string;
   sectionsAfterBreaker?: ProjectSection[];
@@ -155,6 +156,9 @@ function RichText({ text, accentColor }: { text: string; accentColor: string }) 
     </>
   );
 }
+
+const BACK_BUTTON_CLASS =
+  "group inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full border border-[#333] hover:border-[#666] bg-[#1f2023] hover:bg-[#26272a] text-[#d7d7d7] hover:text-white text-base font-medium transition-colors";
 
 // Imported assets resolve to a path or data URL; anything else is an Unsplash photo ID
 function isLocalImage(src: string) {
@@ -341,27 +345,29 @@ export function ProjectDetail({ project, onBack }: ProjectDetailProps) {
       {/* Back */}
       <button
         onClick={onBack}
-        className="flex items-center gap-2 text-[#555] hover:text-white transition-colors mb-14 group text-sm"
+        className={`${BACK_BUTTON_CLASS} mb-14`}
       >
-        <ArrowLeft size={15} className="group-hover:-translate-x-1 transition-transform" />
+        <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
         All work
       </button>
 
       {/* Title + description — centered */}
       <div className="text-center mb-10">
-        <h1 className="text-white text-5xl sm:text-7xl lg:text-8xl font-bold leading-none tracking-tight mb-6">
+        <h1 className="text-white text-5xl sm:text-7xl lg:text-8xl font-bold leading-none tracking-tight mb-8 sm:mb-10">
           {project.title}
         </h1>
-        <p className="text-[#d7d7d7] text-xl sm:text-2xl leading-relaxed max-w-3xl mx-auto">
+        <p className="text-[#d7d7d7] text-xl sm:text-2xl leading-relaxed max-w-2xl mx-auto">
           {project.description}
         </p>
       </div>
 
-      {/* Pill tags */}
-      <div className="flex flex-wrap justify-center gap-2 mb-16">
-        <span className="text-xs px-3 py-1 border border-[#333] rounded-full text-[#666]">{project.category}</span>
-        <span className="text-xs px-3 py-1 border border-[#333] rounded-full text-[#666]">{project.year}</span>
-        <span className="text-xs px-3 py-1 border border-[#333] rounded-full text-[#666]">End-to-end Design</span>
+      {/* Pill tags — same tags and style as the home page card */}
+      <div className="flex flex-wrap justify-center gap-1.5 mb-16">
+        {(project.tags ?? [project.category]).map(tag => (
+          <span key={tag} className="text-xs px-3 py-1 border border-[#444] rounded-full text-[#aaa]">
+            {tag}
+          </span>
+        ))}
       </div>
 
       {/* Hero image — breaks out of the content column to nearly full viewport width */}
@@ -437,9 +443,9 @@ export function ProjectDetail({ project, onBack }: ProjectDetailProps) {
       <div className="border-t border-[#222] mt-8 pt-12">
         <button
           onClick={onBack}
-          className="flex items-center gap-2 text-[#555] hover:text-white transition-colors group text-sm"
+          className={BACK_BUTTON_CLASS}
         >
-          <ArrowLeft size={15} className="group-hover:-translate-x-1 transition-transform" />
+          <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
           Back to all work
         </button>
       </div>
