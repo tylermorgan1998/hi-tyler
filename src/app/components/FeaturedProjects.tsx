@@ -19,7 +19,7 @@ export function FeaturedProjects({ onProjectClick }: FeaturedProjectsProps) {
               <h2 className="text-white text-2xl sm:text-3xl font-semibold leading-tight">
                 {project.title}
               </h2>
-              <p className="text-[#888] text-sm leading-relaxed">
+              <p className="text-[#d7d7d7] text-sm leading-relaxed">
                 {project.description}
               </p>
               <span className="text-sm font-medium" style={{ color: accentColor }}>
@@ -53,7 +53,7 @@ export function FeaturedProjects({ onProjectClick }: FeaturedProjectsProps) {
             >
               <div className="p-6 sm:p-10 min-h-[280px] sm:min-h-[380px] flex items-center justify-center">
                 <img
-                  src={`https://images.unsplash.com/photo-${project.images[0]}?w=900&h=560&fit=crop`}
+                  src={project.coverImage ?? `https://images.unsplash.com/photo-${project.images[0]}?w=900&h=560&fit=crop`}
                   alt={project.title}
                   className="w-full h-auto rounded-lg object-cover shadow-sm"
                 />

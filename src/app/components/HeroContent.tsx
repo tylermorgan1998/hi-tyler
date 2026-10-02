@@ -16,7 +16,7 @@ export function HeroContent() {
       </div>
 
       {/* Description */}
-      <p className="text-[#8a8a8a] text-base sm:text-lg mb-8 sm:mb-10 max-w-xl mx-auto px-4">
+      <p className="text-[#d7d7d7] text-base sm:text-lg mb-8 sm:mb-10 max-w-xl mx-auto px-4">
         Crafting beautiful and intuitive digital experiences that users love
       </p>
 

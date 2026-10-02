@@ -18,7 +18,7 @@ export function AboutContent() {
           <h1 className="text-white text-2xl sm:text-3xl lg:text-4xl">
             Design lead based in New York
           </h1>
-          <p className="text-gray-300 text-base sm:text-lg leading-relaxed">
+          <p className="text-[#d7d7d7] text-base sm:text-lg leading-relaxed">
             I believe great design is about more than aesthetics—it's about <span className="text-[#ec4899]">solving problems</span> and creating meaningful experiences. My approach is rooted in understanding users, embracing simplicity, and pushing the boundaries of innovation.
           </p>
         </div>
@@ -32,7 +32,7 @@ export function AboutContent() {
           {/* Digital Product Design */}
           <div className="space-y-3">
             <h3 className="text-[#ec4899]">Digital Product Design</h3>
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-[#d7d7d7] text-sm leading-relaxed">
               UX/UI design, product strategy, and user research
             </p>
             <div className="flex flex-wrap gap-2">
@@ -45,7 +45,7 @@ export function AboutContent() {
           {/* Graphic Design */}
           <div className="space-y-3">
             <h3 className="text-[#a855f7]">Graphic Design</h3>
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-[#d7d7d7] text-sm leading-relaxed">
               Branding, packaging, and visual identity
             </p>
             <div className="flex flex-wrap gap-2">
@@ -58,7 +58,7 @@ export function AboutContent() {
           {/* 3D & Beyond */}
           <div className="space-y-3">
             <h3 className="text-[#18a0fb]">3D & Development</h3>
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-[#d7d7d7] text-sm leading-relaxed">
               3D design, prototyping, and front-end code
             </p>
             <div className="flex flex-wrap gap-2">
@@ -72,7 +72,7 @@ export function AboutContent() {
 
       {/* Personal touch */}
       <div className="border-t border-[#2c2c2c] pt-6 sm:pt-8">
-        <p className="text-gray-400 text-sm">
+        <p className="text-[#d7d7d7] text-sm">
           When I'm not designing, you'll find me traveling for music festivals, attending drag shows, 
           filling up my Steam library, or binging isekai anime.
         </p>

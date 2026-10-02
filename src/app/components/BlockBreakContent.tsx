@@ -435,7 +435,7 @@ export function BlockBreakContent() {
       {/* Header */}
       <div className="text-center space-y-3 max-w-2xl">
         <h1 className="text-white text-2xl sm:text-3xl lg:text-4xl">Block Break</h1>
-        <p className="text-gray-400 text-sm sm:text-base">
+        <p className="text-[#d7d7d7] text-sm sm:text-base">
           Are you a hiring manager bored of looking through portfolios?<br />Use this as a sign to take a little break. Stay a while 😎
         </p>
       </div>
@@ -486,7 +486,7 @@ export function BlockBreakContent() {
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="bg-black/80 backdrop-blur-sm px-8 py-6 rounded-lg text-center space-y-4">
               <h2 className="text-white text-2xl font-bold">Game Over</h2>
-              <p className="text-gray-300">Final Score: {score}</p>
+              <p className="text-[#d7d7d7]">Final Score: {score}</p>
               <button
                 onClick={handleRestart}
                 className="bg-[#18a0fb] hover:bg-[#0d8ae6] text-white px-6 py-2 rounded-lg transition-colors"
@@ -501,7 +501,7 @@ export function BlockBreakContent() {
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="bg-black/80 backdrop-blur-sm px-8 py-6 rounded-lg text-center space-y-4">
               <h2 className="text-white text-2xl font-bold">You Won! 🎉</h2>
-              <p className="text-gray-300">Final Score: {score}</p>
+              <p className="text-[#d7d7d7]">Final Score: {score}</p>
               <button
                 onClick={handleNextLevel}
                 className="bg-[#18a0fb] hover:bg-[#0d8ae6] text-white px-6 py-2 rounded-lg transition-colors"

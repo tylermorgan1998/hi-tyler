@@ -1,3 +1,21 @@
+import nexusCover from "../../assets/nexus-cover.png";
+import synergyCover from "../../assets/synergy-cover.png";
+import synergyMobile from "../../assets/synergy-mobile.png";
+import synergyViews from "../../assets/synergy-views.png";
+import synergyConflict from "../../assets/synergy-conflict.png";
+import synergyColors from "../../assets/synergy-colors.png";
+import synergyComponents from "../../assets/synergy-components.png";
+import synergyNotifications from "../../assets/synergy-notifications.png";
+
+// A paragraph entry is text, or an image placed inline between paragraphs
+export type ParagraphItem = string | { image: string; alt?: string };
+
+export interface TeamMember {
+  name: string;
+  role: string;
+  photo?: string; // Imported image; initials are shown when missing
+}
+
 export interface ProjectData {
   id: string;
   title: string;
@@ -12,18 +30,20 @@ export interface ProjectData {
   solution?: string;
   results?: string[];
   images: string[]; // Unsplash photo IDs
+  coverImage?: string; // Local cover image; used instead of images[0] when set
   // New flexible structure
   sections?: {
     subheading?: string;
-    heading: string;
-    paragraph: string | string[];
-    images?: string[]; // Optional images for sections
+    heading?: string;
+    paragraph: string | ParagraphItem[];
+    images?: string[]; // Optional images for sections: Unsplash photo IDs or imported local images
+    team?: TeamMember[]; // Optional grid of collaborators
   }[];
   breakerText?: string;
   sectionsAfterBreaker?: {
     subheading?: string;
-    heading: string;
-    paragraph: string | string[];
+    heading?: string;
+    paragraph: string | ParagraphItem[];
     images?: string[]; // Optional images for sections
   }[];
   // Impact metrics
@@ -36,6 +56,124 @@ export interface ProjectData {
 
 export const projectsData: ProjectData[] = [
   {
+    id: "synergy",
+    title: "Synergy",
+    description: "Synergy is a custom-built software designed exclusively for employees of Flexible IT.",
+    category: "Product Design",
+    year: "2024",
+    role: "Sole Designer",
+    bgColor: "bg-[#3a3a3a]",
+    imageQuery: "synergy",
+    coverImage: synergyCover,
+    images: ["1460925895917-afdab827c52f"],
+    sections: [
+      {
+        subheading: "Summary",
+        heading: "With real-time updates and an intuitive calendar interface, Synergy gives employees a seamless way to schedule time off while giving managers a clear, at-a-glance view of team availability and conflicts.",
+        paragraph: "Synergy helps by:\n\n• Allowing employees to seamlessly input their time-off\n• Keeping teams aligned\n• Allowing managers plan more efficiently\n• Helping employees avoid burnout",
+      },
+      {
+        subheading: "Project Highlights",
+        paragraph: "• Helps managers visualize and prevent staffing gaps\n• Encourages employees to plan ahead and use their time off\n• Makes the process feel intuitive, personal, and empowering\n• Reflects our unique policies (like Personal Time) and internal workflows\n• Scales across roles, teams, and devices without creating complexity",
+      },
+      {
+        subheading: "Role & Approach",
+        heading: "It was my job to examine how our company works internally, which includes the existing issues with our PTO policy, and improve the overall user experience.",
+        paragraph: "I was the sole designer on the project. I worked with the CEO, the founder, the CIO, the innovation manager, and the senior programmer — people who had a good understanding of the employees, the culture, and the PTO patterns and issues. I also collaborated closely with the software team lead and developers to make sure my designs were efficient to build and seamless to use.",
+        team: [
+          { name: "Seth Belous", role: "CEO" },
+          { name: "Jeffery Cusick", role: "CIO" },
+          { name: "Jonathan Hugo", role: "IT Manager" },
+          { name: "Mike Accavallo", role: "Innovation Manager" },
+          { name: "Christopher Polanish", role: "Programming Manager" },
+        ],
+      },
+      {
+        subheading: "Issue",
+        heading: "Flexible IT didn't have a time-off platform.",
+        paragraph: [
+          "Employees had unlimited PTO with no tracking. This caused problems:\n\n• Managers had no reliable way to track how many days employees were taking, or which employees were off at the same time. In some cases, entire departments would be offline without notice, causing serious delays for client-facing work.\n• A lot of employees felt pressured to not use any time off, causing burnout and a bad culture.\n• Some employees were overusing their time off without any accountability.",
+          "Existing time-off tools weren't the answer either. They're built for HR tracking, not the planning needs of teams and managers. They lack real-time team-wide visibility, conflict-aware calendars, flexible company-specific leave types, role-based controls, and smart defaults for \"My Team\" vs. \"Company\" views.",
+          "These were the real user questions Synergy needed to answer:\n\n\"Can I see who's out?\"\n\"Will someone be available while I'm gone?\"\n\"What if we both request the same day?\"",
+        ],
+      },
+      {
+        subheading: "Overall Design",
+        heading: "Designing the UI for Synergy required a careful balance of intuitive design and scalability.",
+        paragraph: [
+          "I intentionally designed the interface with modular, rectangular, stackable components. This ensures a responsive, scalable design across devices.",
+          { image: synergyComponents, alt: "Modular Synergy components: calendar, absence request with accrued time, approved request card, and absence type dropdown" },
+          "To eliminate ambiguity, I delivered high-fidelity Figma prototypes that included every screen and interaction, from creating a request to submitting it. I also built a comprehensive design system to support the developers, making navigation through my files efficient.",
+        ],
+      },
+      {
+        subheading: "Dashboard",
+        heading: "The dashboard is where all the information lives.",
+        paragraph: "It captures everything at a glance. The calendar is on the right, viewing options on the left, and the toggle between Company view and Team view is at the top.",
+      },
+      {
+        subheading: "Company View / Team View",
+        heading: "Users can switch between a focused \"My Team\" view and a broader \"Company\" view to monitor absences across departments.",
+        paragraph: [
+          "Most teams only need to coordinate within their group, but certain roles (like execs or cross-functional leads) need a company-wide pulse. The toggle makes both possible without cluttering either experience.",
+          "For example, I'm on the marketing team, but for Synergy to be built, I worked with programmers and stakeholders across the company. Seeing their availability was crucial.",
+        ],
+        images: [synergyViews],
+      },
+      {
+        subheading: "Absence Types",
+        heading: "Leave types had to be expandable.",
+        paragraph: [
+          "New types are introduced as issues arise: new situations, loopholes, or misuse. The CEO was already adding types during the project, with more expected in the future, so the system needed to support new types without breaking the existing design.",
+          "For example, employees didn't want to use a vacation day to pick up their kids from daycare or go to the doctor. Personal Time (PER) was introduced for these cases: 2 hours off, any day, with no explanation needed. This keeps VAC reserved for actual vacations.",
+          "Current absence types:\n\n• Vacation (VAC)\n• Sick / Bereavement / Medical (SBM)\n• Personal Time (PER)\n• Work From Home (WFH)\n• Volunteer (VTO)\n• Business Travel (BUS)",
+        ],
+      },
+      {
+        subheading: "Absence Colors",
+        heading: "Every leave type is color-coded.",
+        paragraph: [
+          "Each color was chosen for clarity, frequency, and emotional tone:",
+          { image: synergyColors, alt: "Color-coded absence tags (VAC, SBM, PER, WFH, VTO, BUS) applied to employee time-off rows" },
+          "**VAC — Purple**\nPurple is bold without feeling alarming, and distinct from every other type. It's also associated with reward, which fits spending accrued PTO.",
+          "**SBM — Red**\nRed signals urgency and \"do not disturb.\" Employees out sick usually can't be contacted, and these absences are often unplanned, so they need to stand out immediately on the calendar.",
+          "**PER — Blue**\nPersonal Time covers short, routine absences of up to 2 hours, so it shouldn't compete for attention. Blue is neutral and calm, and commonly used for informational states in UI. It signals that someone is briefly away, not unavailable.",
+          "**WFH — Green**\nEmployees working from home are still active, just not in the office. Green is the common software convention for \"active\" or \"online,\" so it reads correctly without explanation.",
+          "**VTO — Pink**\nVolunteer time is used rarely, but the company wants it noticed when it is. Pink stands apart from the rest of the palette, so it catches attention even in a busy week.",
+          "**BUS — Orange**\nBusiness travel is planned work, not time off, so it shouldn't feel urgent. Orange is warm without being alarming, and its association with progress and movement fits travel.",
+          "Together, the colors let absence types be identified at a glance, without opening a request. This matters most during high-volume periods like the holidays. Each tag also includes a text label, so meaning never depends on color alone.",
+        ],
+      },
+      {
+        subheading: "Mobile",
+        heading: "Mobile is where many requests happen.",
+        paragraph: "Same-day absences, like sick time, are often submitted away from a computer. The same modular component system adapts to smaller screens, keeping the request flow consistent across devices.",
+        images: [synergyMobile],
+      },
+      {
+        subheading: "Key Features",
+        paragraph: [
+          "**Smart Conflict Warnings**\nIf a user tries to take off on a day where multiple team members are already absent, Synergy flags it immediately. This helps managers avoid approving time off that could leave clients unsupported, especially in lean or specialized teams.",
+          { image: synergyConflict, alt: "Employee conflicts list and the Add absence form showing a conflicting request" },
+          "**Manager View**\nManagers can look up any employee on their team and see their information, including previous time off. Most importantly, managers can manually create conflicts. If two team members can't be out at the same time, the manager links them, and Synergy flags it when both request overlapping days.",
+          "**Admin View**\nAdmins can search all employees, review requests waiting for approval, see long leaves flagged by the system, and view every request across the company. Admins can also create conflicts between employees on different teams. For example, if someone in Programming and someone in HR are building an internal HR app together, an admin can link them so Synergy flags it if they both try to take time off at the same time.",
+          "**Notifications**\nManagers are alerted when an employee submits a vacation request that needs approval, and when a conflict occurs. Admins are also alerted when a long leave is requested.",
+          { image: synergyNotifications, alt: "Notifications panel showing incoming VAC and WFH requests from employees" },
+          "**View All / My Requests**\nUsers can toggle between their personal time-off history and the full list of requests submitted by their team (if they're a manager). It gives both employees and managers a clear sense of what's scheduled, what's pending, and what's already happened, all from one place.",
+          "**Holidays Page**\nA simple tab lists all upcoming company holidays. It saves users from digging through onboarding docs or Slack messages to remember when the office is closed, and makes long-term PTO planning easier.",
+        ],
+      },
+      {
+        subheading: "Results",
+        heading: "Since launching Synergy, our company has seen:",
+        paragraph: [
+          "• A measurable increase in vacation planning and usage\n• Fewer surprise conflicts or staffing gaps\n• More team leaders proactively adjusting around absences\n• Employees using Personal Time more thoughtfully, without sacrificing full PTO days",
+          "Most importantly, Synergy normalized conversations around time off. It made PTO feel visible, manageable, and supported.",
+        ],
+      },
+    ],
+  },
+  {
     id: "nexus",
     title: "Nexus",
     description: "Creating a more personal, less frustrating way to get tech support.",
@@ -44,6 +182,7 @@ export const projectsData: ProjectData[] = [
     role: "Sole Designer",
     bgColor: "bg-[#2563eb]",
     imageQuery: "tech support",
+    coverImage: nexusCover,
     images: [
       "1553877522-43269d4ea984", // tech support
       "1460925895917-afdab827c52f", // dashboard
@@ -191,99 +330,39 @@ export const projectsData: ProjectData[] = [
     ],
   },
   {
-    id: "tribe-so-admin",
-    title: "Tribe.so Admin onboarding",
-    description: "Increase user engagement",
-    category: "UX/UI Design",
-    year: "2024",
-    role: "Lead Product Designer",
-    bgColor: "bg-[#e5e7eb]",
-    imageQuery: "dashboard interface",
-    overview: "Tribe.so needed to improve their admin onboarding experience to reduce drop-off rates and increase user activation. The goal was to create an intuitive, step-by-step guide that helps new administrators set up their community platforms quickly and confidently.",
-    challenge: "The original onboarding flow had a 45% drop-off rate during the initial setup. Users reported feeling overwhelmed by the number of configuration options and unclear about the best practices for setting up their community. The challenge was to simplify without removing essential features.",
-    solution: "I designed a progressive disclosure onboarding system that breaks the setup process into manageable steps. Each step provides contextual help, best practice examples, and the ability to skip non-essential configurations. The new design includes interactive tooltips, progress indicators, and personalized recommendations based on the community type.",
-    results: [
-      "68% Increase in completion rate",
-      "45% Reduction in time to first value",
-      "92% User satisfaction score",
-    ],
-    images: [
-      "1460925895917-afdab827c52f", // dashboard main
-      "1551288049-29ac87e57e47", // interface detail 1
-      "1512941937669-90a1b58e7e9c", // interface detail 2
-      "1551434678-e076c223a692", // showcase
-    ],
-  },
-  {
-    id: "lendscape",
-    title: "Lendscape",
-    description: "Lend and Borrow Dashboard",
-    category: "Fintech / Web3",
+    // TODO: replace placeholder description, category, year, role, and images
+    id: "atlas",
+    title: "Atlas",
+    description: "Case study coming soon.",
+    category: "Product Design",
     year: "2024",
     role: "Product Designer",
-    bgColor: "bg-[#4a5568]",
-    imageQuery: "crypto dashboard",
-    overview: "Lendscape is a DeFi lending platform that allows users to lend and borrow cryptocurrency assets. The project required designing a comprehensive dashboard that displays complex financial data in an accessible and actionable format while maintaining trust and security.",
-    challenge: "Cryptocurrency lending involves complex concepts like APY, collateralization ratios, and liquidation thresholds. Users needed to make informed decisions quickly while managing multiple positions. The challenge was to present this complexity in a way that both beginners and advanced users could understand and act upon.",
-    solution: "I created a modular dashboard design with customizable widgets, real-time data visualization, and clear risk indicators. The interface uses color coding and iconography to communicate status at a glance, while detailed tooltips provide deeper explanations. A prominent 'Health Factor' metric helps users understand their position safety instantly.",
-    results: [
-      "$12M Total value locked in first month",
-      "78% Active user retention",
-      "4.8★ Average rating on DApp stores",
-    ],
-    images: [
-      "1551288049-29ac87e57e47", // crypto main
-      "1460925895917-afdab827c52f", // detail 1
-      "1551434678-e076c223a692", // detail 2
-      "1512941937669-90a1b58e7e9c", // showcase
-    ],
-  },
-  {
-    id: "flop-app",
-    title: "Flop App",
-    description: "Social media for poker players",
-    category: "Mobile App Design",
-    year: "2023",
-    role: "Lead Designer",
-    bgColor: "bg-[#7c3aed]",
-    imageQuery: "mobile app poker",
-    overview: "Flop is a social networking app designed specifically for poker players to share hands, discuss strategy, and connect with other players. The app needed to feel authentic to poker culture while being approachable for casual players looking to improve their game.",
-    challenge: "Poker hand discussions require specific formatting and context that traditional social media platforms don't support well. Users needed a way to share hand histories, add annotations, and discuss decisions in a threaded format. The design also needed to balance between serious strategy discussion and casual social interaction.",
-    solution: "I designed a custom hand replay interface that lets users visualize poker hands with street-by-street progression. The app includes hand range visualizers, equity calculators, and a unique 'decision point' feature that lets users poll the community on specific hands. A dual-feed system separates casual content from serious strategy discussion.",
-    results: [
-      "50K Downloads in 3 months",
-      "35min Average daily usage",
-      "10K Hands shared per week",
-    ],
-    images: [
-      "1512941937669-90a1b58e7e9c", // mobile main
-      "1551434678-e076c223a692", // detail 1
-      "1460925895917-afdab827c52f", // detail 2
-      "1551288049-29ac87e57e47", // showcase
-    ],
-  },
-  {
-    id: "promot3-dashboard",
-    title: "Promot3 Dashboard",
-    description: "Project management app",
-    category: "SaaS / Product Design",
-    year: "2024",
-    role: "Senior Product Designer",
     bgColor: "bg-[#3a3a3a]",
-    imageQuery: "project management",
-    overview: "Promot3 is a project management platform designed for creative teams and agencies. The dashboard needed to provide a comprehensive overview of multiple projects while enabling quick navigation to detailed views. The focus was on visual clarity and reducing cognitive load for users managing many projects simultaneously.",
-    challenge: "Creative teams often juggle 10-20 active projects, each with multiple stakeholders, deadlines, and deliverables. Existing project management tools felt too corporate or too simplistic. The challenge was creating a system that feels powerful but not overwhelming, professional but creative.",
-    solution: "I designed a kanban-style dashboard with custom views that can be tailored to different roles (designers, project managers, clients). The interface uses a card-based layout with rich previews, smart filtering, and a unique 'focus mode' that highlights urgent items. Collaborative features like inline comments and file annotations are seamlessly integrated.",
-    results: [
-      "200+ Teams onboarded",
-      "94% Project completion rate",
-      "40% Faster project delivery",
-    ],
-    images: [
-      "1551434678-e076c223a692", // project management main
-      "1512941937669-90a1b58e7e9c", // detail 1
-      "1551288049-29ac87e57e47", // detail 2
-      "1460925895917-afdab827c52f", // showcase
-    ],
+    imageQuery: "atlas",
+    images: ["1551288049-29ac87e57e47"],
+  },
+  {
+    // TODO: replace placeholder description, category, year, role, and images
+    id: "nextvisit",
+    title: "Nextvisit",
+    description: "Case study coming soon.",
+    category: "Product Design",
+    year: "2024",
+    role: "Product Designer",
+    bgColor: "bg-[#3a3a3a]",
+    imageQuery: "nextvisit",
+    images: ["1512941937669-90a1b58e7e9c"],
+  },
+  {
+    // TODO: replace placeholder description, category, year, role, and images
+    id: "flexible-it",
+    title: "Flexible IT",
+    description: "Case study coming soon.",
+    category: "Product Design",
+    year: "2024",
+    role: "Product Designer",
+    bgColor: "bg-[#3a3a3a]",
+    imageQuery: "flexible it",
+    images: ["1551434678-e076c223a692"],
   },
 ];
