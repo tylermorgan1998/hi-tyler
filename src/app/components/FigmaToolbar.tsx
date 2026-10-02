@@ -50,7 +50,17 @@ export function FigmaToolbar({ activeTab, onTabChange }: { activeTab: Tab; onTab
         {tabButton("home", "Home")}
         {/* Not a window tab: scrolls the page down to the project cards */}
         <button
-          onClick={() => document.getElementById("featured-projects")?.scrollIntoView({ behavior: "smooth", block: "start" })}
+          onClick={() => {
+            const scrollToProjects = () =>
+              document.getElementById("featured-projects")?.scrollIntoView({ behavior: "smooth", block: "start" });
+            // Projects are hidden on the About tab, so switch to Home first (after its fade transition)
+            if (activeTab === "about") {
+              onTabChange("home");
+              setTimeout(scrollToProjects, 400);
+            } else {
+              scrollToProjects();
+            }
+          }}
           className={`${TAB_CLASS} ${INACTIVE_TAB_CLASS}`}
         >
           Projects

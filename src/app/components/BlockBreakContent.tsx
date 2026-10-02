@@ -8,7 +8,7 @@ export function BlockBreakContent() {
   const [gameStarted, setGameStarted] = useState(false);
   const [gameOver, setGameOver] = useState(false);
   const [gameWon, setGameWon] = useState(false);
-  
+
   const gameStateRef = useRef({
     balls: [{ x: 0, y: 0, dx: 0, dy: 0, radius: 8, active: true }],
     paddle: { x: 0, y: 0, width: 100, height: 12 },
@@ -40,7 +40,7 @@ export function BlockBreakContent() {
     const patterns = ['multiball'];
 
     const blocks: Array<{ x: number; y: number; width: number; height: number; color: string; hits: number; visible: boolean; pattern?: string }> = [];
-    
+
     for (let row = 0; row < blockRowCount; row++) {
       for (let col = 0; col < blockColumnCount; col++) {
         const colorSet = colors[row % colors.length];
@@ -50,7 +50,7 @@ export function BlockBreakContent() {
         // More 2-hit blocks at higher levels (normal blocks or 2-hit blocks)
         const multiHitChance = Math.min(0.3 + (levelNum * 0.1), 0.6);
         const hits = pattern === 'multiball' ? 1 : (Math.random() < multiHitChance ? 2 : 1);
-        
+
         blocks.push({
           x: blockOffsetLeft + col * (blockWidth + blockPadding),
           y: blockOffsetTop + row * (blockHeight + blockPadding),
@@ -63,7 +63,7 @@ export function BlockBreakContent() {
         });
       }
     }
-    
+
     return blocks;
   };
 
@@ -78,22 +78,22 @@ export function BlockBreakContent() {
     const updateCanvasSize = () => {
       const container = canvas.parentElement;
       if (!container) return;
-      
+
       // Reduced to about half width for better sizing
       const maxWidth = Math.min(700, (window.innerWidth - 200) / 2);
       const maxHeight = Math.min(400, window.innerHeight - 300);
       canvas.width = maxWidth;
       canvas.height = maxHeight;
-      
+
       // Initialize game objects
       const state = gameStateRef.current;
       state.paddle.width = Math.min(100, canvas.width * 0.15);
       state.paddle.height = 12;
       state.paddle.x = (canvas.width - state.paddle.width) / 2;
       state.paddle.y = canvas.height - 30;
-      
+
       state.balls[0].radius = 8;
-      
+
       // Only reset ball position if not playing
       if (!state.isPlaying) {
         state.balls[0].x = canvas.width / 2;
@@ -131,7 +131,7 @@ export function BlockBreakContent() {
       gradient.addColorStop(0, '#FFFFFF');
       gradient.addColorStop(0.5, '#E5E7EB');
       gradient.addColorStop(1, '#FFFFFF');
-      
+
       ctx.fillStyle = gradient;
       ctx.shadowBlur = 10;
       ctx.shadowColor = '#FFFFFF';
@@ -148,11 +148,11 @@ export function BlockBreakContent() {
         const gradient = ctx.createLinearGradient(block.x, block.y, block.x, block.y + block.height);
         gradient.addColorStop(0, block.color);
         gradient.addColorStop(1, adjustBrightness(block.color, -20));
-        
+
         ctx.fillStyle = gradient;
         ctx.shadowBlur = 8;
         ctx.shadowColor = block.color;
-        
+
         // Rounded rectangle
         roundRect(ctx, block.x, block.y, block.width, block.height, 6);
         ctx.fill();
@@ -230,7 +230,7 @@ export function BlockBreakContent() {
           const speed = 4; // Reduced to 4 for slower gameplay
           ball.dx = (hitPosition - 0.5) * speed * 1.5;
           ball.dy = -speed;
-          
+
           // Normalize to maintain consistent speed
           const magnitude = Math.sqrt(ball.dx * ball.dx + ball.dy * ball.dy);
           ball.dx = (ball.dx / magnitude) * speed;
@@ -248,7 +248,7 @@ export function BlockBreakContent() {
             ball.y < block.y + block.height
           ) {
             ball.dy = -ball.dy;
-            
+
             if (block.pattern === 'multiball') {
               // Spawn a second ball
               const speed = 4; // Reduced to 4 to match main ball speed
@@ -322,7 +322,7 @@ export function BlockBreakContent() {
       drawBall();
 
       const { balls } = gameStateRef.current;
-      
+
       if (gameStateRef.current.isPlaying) {
         detectCollisions();
         balls.forEach(ball => {
@@ -343,10 +343,10 @@ export function BlockBreakContent() {
       const rect = canvas.getBoundingClientRect();
       const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
       const x = clientX - rect.left;
-      
+
       const { paddle, balls } = gameStateRef.current;
       paddle.x = Math.max(0, Math.min(canvas.width - paddle.width, x - paddle.width / 2));
-      
+
       // Move ball with paddle if not started
       if (!gameStateRef.current.isPlaying && !gameOver && !gameWon) {
         balls[0].x = paddle.x + paddle.width / 2;
@@ -376,7 +376,7 @@ export function BlockBreakContent() {
       canvas.removeEventListener('touchmove', handlePointerMove);
       canvas.removeEventListener('mousedown', handlePointerDown);
       canvas.removeEventListener('touchstart', handlePointerDown);
-      
+
       if (gameStateRef.current.animationId) {
         cancelAnimationFrame(gameStateRef.current.animationId);
       }
@@ -390,11 +390,11 @@ export function BlockBreakContent() {
     setGameStarted(false);
     setGameOver(false);
     setGameWon(false);
-    
+
     // Reset game state
     const canvas = canvasRef.current;
     if (!canvas) return;
-    
+
     const state = gameStateRef.current;
     state.balls[0].x = canvas.width / 2;
     state.balls[0].y = canvas.height - 50;
@@ -408,12 +408,12 @@ export function BlockBreakContent() {
   const handleNextLevel = () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    
+
     const nextLevel = level + 1;
     setLevel(nextLevel);
     setGameWon(false);
     setGameStarted(false);
-    
+
     // Reset game state for next level
     const state = gameStateRef.current;
     state.balls[0].x = canvas.width / 2;
@@ -422,10 +422,10 @@ export function BlockBreakContent() {
     state.balls[0].dy = 0;
     state.isPlaying = false;
     state.currentLevel = nextLevel;
-    
+
     // Increase ball speed slightly with each level
     const speedBonus = Math.min(nextLevel * 0.2, 3);
-    
+
     // Create new blocks for next level
     state.blocks = createLevel(nextLevel, canvas);
   };
@@ -472,7 +472,7 @@ export function BlockBreakContent() {
           className="rounded-lg"
           style={{ touchAction: 'none' }}
         />
-        
+
         {/* Overlay messages */}
         {!gameStarted && !gameOver && !gameWon && lives > 0 && (
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
@@ -481,7 +481,7 @@ export function BlockBreakContent() {
             </div>
           </div>
         )}
-        
+
         {gameOver && (
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="bg-black/80 backdrop-blur-sm px-8 py-6 rounded-lg text-center space-y-4">
@@ -496,7 +496,7 @@ export function BlockBreakContent() {
             </div>
           </div>
         )}
-        
+
         {gameWon && (
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="bg-black/80 backdrop-blur-sm px-8 py-6 rounded-lg text-center space-y-4">

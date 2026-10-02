@@ -7,15 +7,18 @@ import { AboutContent } from "./AboutContent";
 import { BlockBreakContent } from "./BlockBreakContent";
 import { useColor } from "../contexts/ColorContext";
 
-export function FigmaWindow() {
-  const [activeTab, setActiveTab] = useState<"home" | "about" | "game">("home");
+export type WindowTab = "home" | "about" | "game";
+
+export function FigmaWindow({ onActiveTabChange }: { onActiveTabChange?: (tab: WindowTab) => void }) {
+  const [activeTab, setActiveTab] = useState<WindowTab>("home");
   const [contentVisible, setContentVisible] = useState(true);
   const { accentColor } = useColor();
 
-  const handleTabChange = (tab: "home" | "about" | "game") => {
+  const handleTabChange = (tab: WindowTab) => {
     setContentVisible(false);
     setTimeout(() => {
       setActiveTab(tab);
+      onActiveTabChange?.(tab);
       setTimeout(() => setContentVisible(true), 50);
     }, 200);
   };
@@ -59,7 +62,7 @@ export function FigmaWindow() {
         
         {/* Canvas area */}
         <div 
-          className={`flex-1 bg-[#1e1e1e] p-4 sm:p-6 lg:p-8 relative min-h-[720px] flex items-center justify-center ${activeTab === "game" ? "overflow-x-auto" : "overflow-x-hidden"}`}
+          className={`flex-1 bg-[#1e1e1e] p-4 sm:p-6 lg:p-8 relative ${activeTab === "about" ? "min-h-[520px]" : "min-h-[720px]"} flex items-center justify-center ${activeTab === "game" ? "overflow-x-auto" : "overflow-x-hidden"}`}
           style={{
             backgroundImage: 'radial-gradient(circle, rgba(255, 255, 255, 0.05) 1px, transparent 1px)',
             backgroundSize: '20px 20px'
