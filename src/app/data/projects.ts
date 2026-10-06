@@ -7,6 +7,8 @@ import synergyConflict from "../../assets/synergy-conflict.png";
 import synergyColors from "../../assets/synergy-colors.png";
 import synergyComponents from "../../assets/synergy-components.png";
 import synergyNotifications from "../../assets/synergy-notifications.png";
+import synergyManager from "../../assets/synergy-manager.png";
+import synergyAdmin from "../../assets/synergy-admin.png";
 
 // A paragraph entry is text, or an image placed inline between paragraphs
 export type ParagraphItem = string | { image: string; alt?: string };
@@ -61,7 +63,7 @@ export const projectsData: ProjectData[] = [
   {
     id: "synergy",
     title: "Synergy",
-    description: "Synergy is a custom-built software designed exclusively for employees of Flexible IT.",
+    description: "Synergy allows employees to seamlessly input their time-off, allows managers to plan better, and helps everyone avoid burnout.",
     category: "Product Design",
     year: "2024",
     role: "Sole Designer",
@@ -161,7 +163,9 @@ export const projectsData: ProjectData[] = [
           "**Smart Conflict Warnings**\nIf a user tries to take off on a day where multiple team members are already absent, Synergy flags it immediately. This helps managers avoid approving time off that could leave clients unsupported, especially in lean or specialized teams.",
           { image: synergyConflict, alt: "Employee conflicts list and the Add absence form showing a conflicting request" },
           "**Manager View**\nManagers can look up any employee on their team and see their information, including previous time off. Most importantly, managers can manually create conflicts. If two team members can't be out at the same time, the manager links them, and Synergy flags it when both request overlapping days.",
+          { image: synergyManager, alt: "Manager view: employee profile with auto-approval limit, time off history, and conflicts, with the Conflict dialog open" },
           "**Admin View**\nAdmins can search all employees, review requests waiting for approval, see long leaves flagged by the system, and view every request across the company. Admins can also create conflicts between employees on different teams. For example, if someone in Programming and someone in HR are building an internal HR app together, an admin can link them so Synergy flags it if they both try to take time off at the same time.",
+          { image: synergyAdmin, alt: "Admin view on the Flagged Long Leaves tab, listing pending long vacation requests with dates and status" },
           "**Notifications**\nManagers are alerted when an employee submits a vacation request that needs approval, and when a conflict occurs. Admins are also alerted when a long leave is requested.",
           { image: synergyNotifications, alt: "Notifications panel showing incoming VAC and WFH requests from employees" },
           "**View All / My Requests**\nUsers can toggle between their personal time-off history and the full list of requests submitted by their team (if they're a manager). It gives both employees and managers a clear sense of what's scheduled, what's pending, and what's already happened, all from one place.",
