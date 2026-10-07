@@ -157,6 +157,10 @@ function RichText({ text, accentColor }: { text: string; accentColor: string }) 
   );
 }
 
+// On wide screens, images extend past both sides of the text column into the
+// empty space between the Contents sidebar and the page edge
+const IMAGE_BREAKOUT_CLASS = "xl:-mx-24 2xl:-mx-44";
+
 const BACK_BUTTON_CLASS =
   "group inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full border border-[#333] hover:border-[#666] bg-[#1f2023] hover:bg-[#26272a] text-[#d7d7d7] hover:text-white text-base font-medium transition-colors";
 
@@ -263,13 +267,14 @@ function SectionContent({ id, section, number, accentColor, fullBleed }: {
           typeof para === "string" ? (
             <RichText key={i} text={para} accentColor={accentColor} />
           ) : (
-            <ImageWithFallback
-              key={i}
-              src={para.image}
-              alt={para.alt ?? ""}
-              className="w-full h-auto mt-2 mb-10"
-              loading="lazy"
-            />
+            <div key={i} className={`${IMAGE_BREAKOUT_CLASS} mt-2 mb-10`}>
+              <ImageWithFallback
+                src={para.image}
+                alt={para.alt ?? ""}
+                className="w-full h-auto"
+                loading="lazy"
+              />
+            </div>
           )
         )}
         {section.team && section.team.length > 0 && (
@@ -281,12 +286,16 @@ function SectionContent({ id, section, number, accentColor, fullBleed }: {
         <div className={`mt-10 ${section.images.length === 1 && fullBleed && !isLocalImage(section.images[0]) ? "-mx-4 sm:-mx-6 lg:-mx-8" : ""}`}>
           {section.images.length === 1 && isLocalImage(section.images[0]) ? (
             // Local images (e.g. device mockups with transparent backgrounds) render as-is
-            <ImageWithFallback
-              src={section.images[0]}
-              alt={section.heading ?? section.subheading ?? ""}
-              className="w-full h-auto"
-              loading="lazy"
-            />
+            <div className="max-w-3xl">
+              <div className={IMAGE_BREAKOUT_CLASS}>
+                <ImageWithFallback
+                  src={section.images[0]}
+                  alt={section.heading ?? section.subheading ?? ""}
+                  className="w-full h-auto"
+                  loading="lazy"
+                />
+              </div>
+            </div>
           ) : section.images.length === 1 ? (
             <div className={`overflow-hidden ${fullBleed ? "" : "rounded-2xl"} bg-[#111]`}>
               <ImageWithFallback

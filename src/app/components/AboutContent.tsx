@@ -1,9 +1,9 @@
 import { memo } from 'react';
-import Spline from '@splinetool/react-spline';
+import { SafeSpline } from './SafeSpline';
 import profileImage from 'figma:asset/146c8897395bc3e0c534fe834180dfb06ceb920f.png';
 
 const SplineScene = memo(() => (
-  <Spline scene="https://prod.spline.design/wfqKABbgD1Bkluti/scene.splinecode" />
+  <SafeSpline scene="https://prod.spline.design/wfqKABbgD1Bkluti/scene.splinecode" />
 ));
 
 export function AboutContent() {
@@ -15,11 +15,11 @@ export function AboutContent() {
           <SplineScene />
         </div>
         <div className="space-y-4 sm:space-y-6">
-          <h1 className="text-white text-2xl sm:text-3xl lg:text-4xl">
+          <h1 className="text-white text-2xl sm:text-3xl lg:text-4xl font-semibold">
             Design lead based in New York
           </h1>
           <p className="text-[#d7d7d7] text-base sm:text-lg leading-relaxed">
-            I believe great design is about more than aesthetics—it's about <span className="text-[#ec4899]">solving problems</span> and creating meaningful experiences. My approach is rooted in understanding users, embracing simplicity, and pushing the boundaries of innovation.
+            I care about how things work, not just how they look. I've designed everything from interfaces to brand systems, so I think about the whole picture: how a screen fits the brand, what's realistic to build, and what happens after launch. The parts most people never notice are usually the most interesting to figure out.
           </p>
         </div>
       </div>
